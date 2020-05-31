@@ -14,7 +14,7 @@ public class FrontController {
     protected ServiceFactory serviceFactory;
 
     public FrontController() {
-        serviceFactory = ServiceFactory.getInstance();
+        serviceFactory = ServiceFactory.get();
     }
 
     public void goToActivity(AppCompatActivity self, Class<?> activity) {

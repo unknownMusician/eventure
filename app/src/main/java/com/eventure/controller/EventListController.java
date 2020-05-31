@@ -15,12 +15,12 @@ public class EventListController extends FrontController {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<String> getEventTitleList(){
-        return ServiceFactory.getInstance().getEventService().getEventTitleList();
+        return serviceFactory.getEventService().getEventTitleList();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void goToEventActivity(Integer id, AppCompatActivity self){
-        Event event = (Event)ServiceFactory.getInstance().getEventService().getEventList().toArray()[id];
+        Event event = (Event)serviceFactory.getEventService().getEventList().toArray()[id];
         ControllerFactory.get().getEventController().setEvent(event);
         this.goToActivity(self, EventActivity.class);
     }
