@@ -31,6 +31,6 @@ public class EventListController extends FrontController {
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<Event> getAllEvents(){
-        return ServiceFactory.getInstance().getEventService().getEventList();
+        return ServiceFactory.get().getEventService().getEventList();
     }
 }
