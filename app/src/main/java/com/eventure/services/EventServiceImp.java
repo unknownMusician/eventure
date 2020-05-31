@@ -21,7 +21,7 @@ public class EventServiceImp implements EventService {
 
     @Override
     public Collection<Event> getEventList() {
-        Collection<Event> events = daoFactory.getEventDao().findAll();
+        return daoFactory.getEventDao().findAll();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

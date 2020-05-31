@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.FrontController;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    FrontController.getInstance().goToActivity(MenuActivity.this,EventListActivity.class);
+                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this,EventListActivity.class);
                 }
             }
         });

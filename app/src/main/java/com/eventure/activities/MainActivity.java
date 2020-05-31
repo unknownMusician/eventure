@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.FrontController;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                FrontController.getInstance().goToActivity(MainActivity.this,LoginActivity.class);
+                ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,LoginActivity.class);
             }
         });
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                FrontController.getInstance().goToActivity(MainActivity.this,MenuActivity.class);
+                ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,MenuActivity.class);
             }
         });
 

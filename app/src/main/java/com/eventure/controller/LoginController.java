@@ -8,27 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.activities.MenuActivity;
 import com.eventure.model.User;
+import com.eventure.services.ServiceFactory;
 
 public class LoginController extends FrontController {
-
-    public static LoginController instance;
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static LoginController getInstance() {
-        if (instance == null) {
-            return new LoginController();
-        }
-        return instance;
-    }
-
-    ////////// static line //////////
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected LoginController(){
-        super();
-    }
-
-    ///// ///// controller ///// /////
 
     public boolean checkUserLoginAttributes(EditText mLogin, EditText mPassword) {
         String login = mLogin.getText().toString();
@@ -41,7 +23,7 @@ public class LoginController extends FrontController {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void goToMenuActivity(AppCompatActivity self){
+    public void goToMenuActivity(AppCompatActivity self) {
         this.goToActivity(self, MenuActivity.class);
     }
 }
