@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
 import com.eventure.controller.FrontController;
+import com.eventure.controller.LoginController;
+import com.eventure.controller.MenuController;
 import com.eventure.dao.DaoFactory;
 import com.eventure.inmemory.InMemoryDaoFactory;
 import com.eventure.inmemory.InMemoryDatabase;
@@ -47,16 +49,15 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: Hello!");
 
 
-                if(FrontController.getInstance().checkUserLoginAttributes(mLogin,mPassword)){
+            /*    if(LoginController.getInstance().checkUserLoginAttributes(mLogin,mPassword)){
                     toastMessage("You sign it!");
                 }
                 else{
                     toastMessage("Wrong password or login");
                 }
-
+*/
             }
         });
-
 
     }
     
