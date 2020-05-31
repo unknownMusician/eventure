@@ -37,7 +37,7 @@ public class ControllerFactory {
     protected ControllerFactory() {
         instance = this;
 
-        serviceFactory = ServiceFactory.getInstance();
+        serviceFactory = ServiceFactory.get();
 
         menuController = new MenuController();
         loginController = new LoginController();

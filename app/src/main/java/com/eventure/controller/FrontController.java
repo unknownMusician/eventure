@@ -15,7 +15,7 @@ public class FrontController {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public FrontController() {
-        serviceFactory = ServiceFactory.getInstance();
+        serviceFactory = ServiceFactory.get();
     }
 
     public void goToActivity(AppCompatActivity self, Class<?> activity) {
