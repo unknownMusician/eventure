@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.EventActivity"></activity>
+        <activity android:name=".activities.CalendarActivity"></activity>
+        <activity android:name=".activities.EventActivity" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +21,7 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.MenuActivity" />
         <activity android:name=".activities.EventListActivity" />
-        <activity android:name=".activities.RegisterActivity"></activity>
+        <activity android:name=".activities.RegisterActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

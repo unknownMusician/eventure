@@ -36,7 +36,9 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this,EventListActivity.class);
+                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, EventListActivity.class);
+                }else if(position == 1){
+                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, CalendarActivity.class);
                 }
             }
         });
