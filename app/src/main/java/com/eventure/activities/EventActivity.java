@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
 import com.eventure.model.Event;
 import com.eventure.services.ServiceFactory;
 
@@ -27,7 +28,7 @@ public class EventActivity extends AppCompatActivity {
 
         Integer idOfEvent = Integer.parseInt(getIntent().getStringExtra("idOfEvent"));
 
-        Event event = ServiceFactory.getInstance().getEventService().getEventList().get(idOfEvent);
+        Event event = ControllerFactory.get().getEventListController().getAllEvents().get(idOfEvent);
 
         TextView title = findViewById(R.id.eventTitleTextView);
         TextView description = findViewById(R.id.eventDescriptionTextView);

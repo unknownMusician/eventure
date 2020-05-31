@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,LoginActivity.class);
+
             }
         });
 

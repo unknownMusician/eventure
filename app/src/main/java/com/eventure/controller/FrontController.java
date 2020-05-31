@@ -13,6 +13,7 @@ public class FrontController {
 
     protected ServiceFactory serviceFactory;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public FrontController() {
         serviceFactory = ServiceFactory.get();
     }
