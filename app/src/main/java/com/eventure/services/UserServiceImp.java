@@ -35,4 +35,9 @@ public class UserServiceImp implements UserService {
         User user = new User(0, login, password);
         daoFactory.getUserDao().insert(user, true);
     }
+
+    @Override
+    public boolean exist(String name) {
+        return getByLogin(name) != null;
+    }
 }
