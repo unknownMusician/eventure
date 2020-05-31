@@ -30,7 +30,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void createUser(String name, String password) {
-        
+    public void createUser(String login, String password) {
+        User user = new User(0, login, password);
+        daoFactory.getUserDao().insert(user, true);
     }
 }
