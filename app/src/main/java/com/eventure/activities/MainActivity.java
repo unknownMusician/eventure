@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button loginBtn = findViewById(R.id.btnLogIn);
         Button menuBtn = findViewById(R.id.btnMenu);
+        Button registrationBtn = findViewById(R.id.registrationBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -36,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,MenuActivity.class);
             }
         });
-
+        registrationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,RegisterActivity.class);
+            }
+        });
 
     }
 }

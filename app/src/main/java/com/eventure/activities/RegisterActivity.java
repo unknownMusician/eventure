@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
 
 public class RegisterActivity extends AppCompatActivity {
     @Override
@@ -18,19 +19,24 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
         Button registerBtn = findViewById(R.id.registerBtn);
-        EditText login = findViewById(R.id.loginRegisterEditText);
-        EditText password = findViewById(R.id.passwordRegisterEditText);
+        EditText mLogin = findViewById(R.id.loginRegisterEditText);
+        EditText mPassword = findViewById(R.id.passwordRegisterEditText);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(ControllerFactory.get().getRegisterController().registerUser(mLogin,mPassword)){
+                    toastMessage("You have successfully created an account");
+                }
+                else{
+                    toastMessage("Sorry the is trouble!");
+                }
             }
         });
 
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void toastMessage(String message){
-        Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterActivity.this,message,Toast.LENGTH_SHORT).show();
     }
 }

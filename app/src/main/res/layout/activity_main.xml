@@ -28,4 +28,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn"
         app:layout_constraintVertical_bias="0.158" />
+
+    <Button
+        android:id="@+id/registrationBtn"
+        android:layout_width="142dp"
+        android:layout_height="47dp"
+        android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMenu"
+        app:layout_constraintVertical_bias="0.264"
+        tools:layout_editor_absoluteX="134dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
