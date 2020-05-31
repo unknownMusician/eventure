@@ -10,6 +10,18 @@ import com.eventure.services.ServiceFactory;
 
 public class LoginController extends FrontController {
 
+    public static LoginController instance;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static LoginController getInstance() {
+        if (instance == null) {
+            return new LoginController();
+        }
+        return instance;
+    }
+
+    ////////// static line //////////
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected LoginController(){
         super();

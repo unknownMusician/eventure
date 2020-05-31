@@ -9,6 +9,18 @@ import java.util.Arrays;
 
 public class MenuController extends FrontController {
 
+    public static MenuController instance;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static MenuController getInstance() {
+        if (instance == null) {
+            return new MenuController();
+        }
+        return instance;
+    }
+
+    ////////// static line //////////
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected MenuController(){
         super();
