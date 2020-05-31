@@ -29,4 +29,8 @@ public class EventListController extends FrontController {
     public void goToMenuActivity(AppCompatActivity self){
         this.goToActivity(self, MenuActivity.class);
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public ArrayList<Event> getAllEvents(){
+        return ServiceFactory.getInstance().getEventService().getEventList();
+    }
 }

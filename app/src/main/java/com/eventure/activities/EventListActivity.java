@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.EventListController;
 import com.eventure.model.Event;
 
@@ -27,7 +28,7 @@ public class EventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
         ListView list = findViewById(R.id.listOfEventsList);
-        ArrayList<String> titles = EventListController.getInstance().getEventTitleList();
+        ArrayList<String> titles = ControllerFactory.get().getEventListController().getEventTitleList();
 
         ListAdapter adapter = new ArrayAdapter(this,R.layout.event_list_items_layout,
                 titles);

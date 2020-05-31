@@ -33,6 +33,7 @@ public class ControllerFactory {
     private CalendarController calendarController;
     private FrontController frontController;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected ControllerFactory() {
         instance = this;
 
