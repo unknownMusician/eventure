@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = mPassword.getText().toString();
                 User currentUser = userService.getByLogin(login);
                 Log.d(TAG, "onClick: " + login);
-                if (!login.equals("") && password.equals("")) {
+                if (!(login.equals("") && password.equals(""))) {
                     if (currentUser != null) {
                         if (userService.checkPassword(currentUser, password) == true) {
                             toastMessage("You have sign in");
