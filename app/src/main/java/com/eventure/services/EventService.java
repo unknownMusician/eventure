@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface EventService {
 
-    Collection<Event> getEventList();
+    ArrayList<Event> getEventList();
     ArrayList<String> getEventTitleList();
     Event search(String title);
 }

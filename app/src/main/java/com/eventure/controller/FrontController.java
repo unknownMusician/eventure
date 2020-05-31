@@ -31,7 +31,7 @@ public class FrontController {
         serviceFactory = ServiceFactory.getInstance();
     }
 
-    protected void goToActivity(AppCompatActivity self, Class<?> activity) {
+    public void goToActivity(AppCompatActivity self, Class<?> activity) {
         self.startActivity(new Intent(self, activity));
     }
 }

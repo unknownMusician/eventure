@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import com.eventure.dao.DaoFactory;
 import com.eventure.model.Event;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,8 +21,9 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public Collection<Event> getEventList() {
-        Collection<Event> events = daoFactory.getEventDao().findAll();
+    public ArrayList<Event> getEventList() {
+        ArrayList<Event> events =  new ArrayList<>(daoFactory.getEventDao().findAll());
+        return events;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

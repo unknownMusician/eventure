@@ -24,6 +24,7 @@ public class InMemoryTestData {
         database.users.put(john.getUserId(),john);
         database.users.put(mike.getUserId(),mike);
         database.events.put(event.getEventId(),event);
+        database.events.put(event.getEventId(),event);
     }
 
 

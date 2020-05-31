@@ -36,8 +36,8 @@ public class EventListController extends FrontController {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void goToEventActivity(String eventTitle, AppCompatActivity self){
-        Event event = ServiceFactory.getInstance().getEventService().search(eventTitle);
+    public void goToEventActivity(Integer id, AppCompatActivity self){
+        Event event = (Event)ServiceFactory.getInstance().getEventService().getEventList().toArray()[id];
         EventController.getInstance().setEvent(event);
         this.goToActivity(self, EventActivity.class);
     }
