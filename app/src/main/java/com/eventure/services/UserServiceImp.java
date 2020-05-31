@@ -28,4 +28,9 @@ public class UserServiceImp implements UserService {
     public boolean checkPassword(User user, String password) {
         return user.getPassword().equals(passwordHasher.apply(password));
     }
+
+    @Override
+    public void createUser(String name, String password) {
+        
+    }
 }
