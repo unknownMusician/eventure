@@ -27,7 +27,7 @@ public class FrontController {
     private UserService userService;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public FrontController() {
+    private FrontController() {
         if (instance == null) {
             instance = this;
 
@@ -36,6 +36,7 @@ public class FrontController {
             DaoFactory daoFactory = new InMemoryDaoFactory(database);
 
             userService = new UserServiceImp(daoFactory, UnaryOperator.identity());
+
         }
     }
 
@@ -43,20 +44,26 @@ public class FrontController {
         System.out.println(str);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static FrontController getInstance() {
+        if(instance == null){
+            return new FrontController();
+        }
         return instance;
     }
 
     public boolean checkUserLoginAttributes(EditText mLogin, EditText mPassword){
         String login = mLogin.getText().toString();
         String password = mPassword.getText().toString();
-
         User user = userService.getByLogin(login);
-
         if(user == null){
             return false;
         }
-
-        return userService.checkPassword(userService.getByLogin(login), password);
+        return userService.checkPassword(user, password);
     }
+
+    public void goToActivity(AppCompatActivity self,Class<?> activity){
+        self.startActivity(new Intent(self,activity));
+    }
+
 }

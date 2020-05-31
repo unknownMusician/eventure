@@ -33,9 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        InMemoryDatabase database = initDatabase();
-        DaoFactory daoFactory = new InMemoryDaoFactory(database);
-        final UserService userService = new UserServiceImp(daoFactory, UnaryOperator.identity());
+
 
         Button signInBtn = findViewById(R.id.btnSignIn);
         signInBtn.setOnClickListener(new View.OnClickListener() {
@@ -43,27 +41,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText mLogin = findViewById(R.id.loginText);
                 EditText mPassword = findViewById(R.id.passwordText);
-                String login = mLogin.getText().toString();
-                String password = mPassword.getText().toString();
 
-                User currentUser = userService.getByLogin(login);
-                Log.d(TAG, "onClick: " + login);
-                if (!(login.equals("") && password.equals(""))) {
-                    if (currentUser != null) {
-                        if (userService.checkPassword(currentUser, password)) {
-                            toastMessage("You have sign in");
-                        } else {
-                            toastMessage("Wrong Password");
-                        }
-                    } else {
-                        toastMessage("There is no user with login " + login.toString());
-                    }
-
-
+                if(FrontController.getInstance().checkUserLoginAttributes(mLogin,mPassword)){
+                    toastMessage("You sign it!");
                 }
                 else{
-                    toastMessage("You didn`t apply fields");
+                    toastMessage("Wrong password or login");
                 }
+
             }
         });
 
@@ -76,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         return database;
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void toastMessage(String message){
         Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
 
