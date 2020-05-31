@@ -16,7 +16,8 @@ public class ServiceFactory {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static ServiceFactory get(){
         if(instance == null){
-            return new ServiceFactory();
+            instance = new ServiceFactory();
+            return instance;
         }
         return instance;
     }

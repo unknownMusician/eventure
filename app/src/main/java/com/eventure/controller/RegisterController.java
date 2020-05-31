@@ -10,7 +10,7 @@ public class RegisterController extends FrontController {
         String login = mLogin.getText().toString();
         String password = mPassword.getText().toString();
 
-        if(login.replaceAll("", "").equals("") || password.replaceAll("", "").equals("") ||
+        if(login.replaceAll(" ", "").equals("") || password.replaceAll(" ", "").equals("") ||
         serviceFactory.getUserService().exist(login)) {
             return false;
         }

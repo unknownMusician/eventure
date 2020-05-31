@@ -1,5 +1,6 @@
 package com.eventure.inmemory;
 
+import com.eventure.dao.DaoFactory;
 import com.eventure.model.Event;
 import com.eventure.model.User;
 
@@ -15,7 +16,7 @@ public class InMemoryDatabase {
         users = new TreeMap<>();
         events = new TreeMap<>();
     }
-    public InMemoryDaoFactory getDaoFactory(){
+    public DaoFactory getDaoFactory(){
         return new InMemoryDaoFactory(this);
     }
 

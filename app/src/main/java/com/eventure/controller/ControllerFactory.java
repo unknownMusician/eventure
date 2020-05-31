@@ -16,7 +16,8 @@ public class ControllerFactory {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static ControllerFactory get() {
         if (instance == null) {
-            return new ControllerFactory();
+            instance = new ControllerFactory();
+            return instance;
         }
         return instance;
     }
