@@ -1,0 +1,39 @@
+package com.eventure.services;
+
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.eventure.inmemory.InMemoryDatabase;
+import com.eventure.inmemory.InMemoryTestData;
+
+import java.util.function.UnaryOperator;
+
+public class ServiceFactory {
+
+    public static ServiceFactory instance;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static ServiceFactory getInstance(){
+        if(instance == null){
+            return new ServiceFactory();
+        }
+        return instance;
+    }
+
+    //////////////////// static line ////////////////////
+
+    private UserService userService;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private ServiceFactory(){
+        InMemoryDatabase database = new InMemoryDatabase();
+        InMemoryTestData.generateTo(database);
+
+        this.userService = new UserServiceImp(database.getDaoFactory(), UnaryOperator.identity());
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+}

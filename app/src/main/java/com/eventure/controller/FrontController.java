@@ -15,6 +15,7 @@ import com.eventure.inmemory.InMemoryDaoFactory;
 import com.eventure.inmemory.InMemoryDatabase;
 import com.eventure.inmemory.InMemoryTestData;
 import com.eventure.model.User;
+import com.eventure.services.ServiceFactory;
 import com.eventure.services.UserService;
 import com.eventure.services.UserServiceImp;
 
@@ -22,48 +23,28 @@ import java.util.function.UnaryOperator;
 
 public class FrontController {
 
-    private static FrontController instance;
-
-    private UserService userService;
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private FrontController() {
-        if (instance == null) {
-            instance = this;
-
-            InMemoryDatabase database = new InMemoryDatabase();
-            InMemoryTestData.generateTo(database);
-            DaoFactory daoFactory = new InMemoryDaoFactory(database);
-
-            userService = new UserServiceImp(daoFactory, UnaryOperator.identity());
-
-        }
-    }
-
-    public void print(String str) {
-        System.out.println(str);
-    }
+    protected static FrontController instance;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static FrontController getInstance() {
-        if(instance == null){
+        if (instance == null) {
             return new FrontController();
         }
         return instance;
     }
 
-    public boolean checkUserLoginAttributes(EditText mLogin, EditText mPassword){
-        String login = mLogin.getText().toString();
-        String password = mPassword.getText().toString();
-        User user = userService.getByLogin(login);
-        if(user == null){
-            return false;
-        }
-        return userService.checkPassword(user, password);
+    //////////////////// static line ////////////////////
+
+    protected ServiceFactory serviceFactory;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected FrontController() {
+        instance = this;
+
+        serviceFactory = ServiceFactory.getInstance();
     }
 
-    public void goToActivity(AppCompatActivity self,Class<?> activity){
-        self.startActivity(new Intent(self,activity));
+    public void goToActivity(AppCompatActivity self, Class<?> activity) {
+        self.startActivity(new Intent(self, activity));
     }
-
 }

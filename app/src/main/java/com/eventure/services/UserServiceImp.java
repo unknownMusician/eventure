@@ -28,4 +28,10 @@ public class UserServiceImp implements UserService {
     public boolean checkPassword(User user, String password) {
         return user.getPassword().equals(passwordHasher.apply(password));
     }
+
+    @Override
+    public void createUser(String login, String password) {
+        User user = new User(0, login, password);
+        daoFactory.getUserDao().insert(user, true);
+    }
 }
