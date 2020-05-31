@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.FrontController;
 import com.eventure.controller.LoginController;
 import com.eventure.controller.MenuController;
@@ -50,13 +51,13 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: Hello!");
 
 
-            /*    if(LoginController.getInstance().checkUserLoginAttributes(mLogin,mPassword)){
+                if(ControllerFactory.get().getLoginController().checkUserLoginAttributes(mLogin,mPassword)){
                     toastMessage("You sign it!");
                 }
                 else{
                     toastMessage("Wrong password or login");
                 }
-*/
+
             }
         });
 
