@@ -12,23 +12,6 @@ import com.eventure.services.ServiceFactory;
 
 public class EventController extends FrontController {
 
-    public static EventController instance;
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static EventController getInstance() {
-        if (instance == null) {
-            return new EventController();
-        }
-        return instance;
-    }
-
-    ////////// static line //////////
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected EventController(){ super(); }
-
-    ///// ///// controller ///// /////
-
     private Event event;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
