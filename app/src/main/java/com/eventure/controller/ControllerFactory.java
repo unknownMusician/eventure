@@ -25,13 +25,13 @@ public class ControllerFactory {
 
     protected ServiceFactory serviceFactory;
 
-
+    private FrontController frontController;
     private MenuController menuController;
     private LoginController loginController;
     private EventListController eventListController;
     private EventController eventController;
     private CalendarController calendarController;
-    private FrontController frontController;
+    private RegisterController registerController;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected ControllerFactory() {
@@ -39,12 +39,17 @@ public class ControllerFactory {
 
         serviceFactory = ServiceFactory.get();
 
+        frontController = new FrontController();
         menuController = new MenuController();
         loginController = new LoginController();
         eventListController = new EventListController();
         eventController = new EventController();
         calendarController = new CalendarController();
-        frontController = new FrontController();
+        registerController = new RegisterController();
+    }
+
+    public FrontController getFrontController() {
+        return frontController;
     }
 
     public ServiceFactory getServiceFactory() {
@@ -71,8 +76,8 @@ public class ControllerFactory {
         return calendarController;
     }
 
-    public FrontController getFrontController() {
-        return frontController;
+    public RegisterController getRegisterController() {
+        return registerController;
     }
 
     ////////// SOME FUNCS FOR NIKITA //////////
@@ -87,6 +92,8 @@ public class ControllerFactory {
         return getMenuController();
     }public FrontController getMy(MainActivity self){
         return getFrontController();
+    }public RegisterController getMy(RegisterActivity self){
+        return getRegisterController();
     }/*public CalendarController getMy(CalendarActivity self){
         return getCalendarController();
     }*/
