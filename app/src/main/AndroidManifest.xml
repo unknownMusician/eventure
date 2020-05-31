@@ -17,6 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.MenuActivity"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

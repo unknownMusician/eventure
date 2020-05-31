@@ -42,6 +42,11 @@ public class LoginActivity extends AppCompatActivity {
                 EditText mLogin = findViewById(R.id.loginText);
                 EditText mPassword = findViewById(R.id.passwordText);
 
+
+
+                Log.d(TAG, "onClick: Hello!");
+
+
                 if(FrontController.getInstance().checkUserLoginAttributes(mLogin,mPassword)){
                     toastMessage("You sign it!");
                 }
@@ -54,17 +59,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-
-    private InMemoryDatabase initDatabase(){
-        InMemoryDatabase database = new InMemoryDatabase();
-        InMemoryTestData.generateTo(database);
-        return database;
-
-    }
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void toastMessage(String message){
         Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
-
-        FrontController.getInstance().print("HUY");
     }
 }
