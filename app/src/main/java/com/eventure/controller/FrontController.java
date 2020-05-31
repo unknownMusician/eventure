@@ -2,24 +2,11 @@ package com.eventure.controller;
 
 import android.content.Intent;
 import android.os.Build;
-import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.eventure.activities.LoginActivity;
-import com.eventure.activities.MainActivity;
-import com.eventure.dao.DaoFactory;
-import com.eventure.inmemory.InMemoryDaoFactory;
-import com.eventure.inmemory.InMemoryDatabase;
-import com.eventure.inmemory.InMemoryTestData;
-import com.eventure.model.User;
 import com.eventure.services.ServiceFactory;
-import com.eventure.services.UserService;
-import com.eventure.services.UserServiceImp;
-
-import java.util.function.UnaryOperator;
 
 public class FrontController {
 
@@ -44,7 +31,7 @@ public class FrontController {
         serviceFactory = ServiceFactory.getInstance();
     }
 
-    public void goToActivity(AppCompatActivity self, Class<?> activity) {
+    protected void goToActivity(AppCompatActivity self, Class<?> activity) {
         self.startActivity(new Intent(self, activity));
     }
 }
