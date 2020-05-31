@@ -24,6 +24,7 @@ public class ServiceFactory {
     //////////////////// static line ////////////////////
 
     private UserService userService;
+    private EventService eventService;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private ServiceFactory(){
@@ -31,9 +32,14 @@ public class ServiceFactory {
         InMemoryTestData.generateTo(database);
 
         this.userService = new UserServiceImp(database.getDaoFactory(), UnaryOperator.identity());
+        this.eventService = new EventServiceImp(database.getDaoFactory());
     }
 
     public UserService getUserService() {
         return userService;
+    }
+
+    public EventService getEventService() {
+        return eventService;
     }
 }

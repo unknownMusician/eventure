@@ -3,8 +3,15 @@ package com.eventure.controller;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class EventListController {
+import com.eventure.activities.*;
+import com.eventure.model.Event;
+import com.eventure.services.ServiceFactory;
+
+import java.util.ArrayList;
+
+public class EventListController extends FrontController {
 
     public static EventListController instance;
 
@@ -19,7 +26,24 @@ public class EventListController {
     ////////// static line //////////
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    protected EventListController(){
-        super();
+    protected EventListController(){ super(); }
+
+    ///// ///// controller ///// /////
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public ArrayList<String> getEventTitleList(){
+        return ServiceFactory.getInstance().getEventService().getEventTitleList();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void goToEventActivity(String eventTitle, AppCompatActivity self){
+        Event event = ServiceFactory.getInstance().getEventService().search(eventTitle);
+        EventController.getInstance().setEvent(event);
+        this.goToActivity(self, EventActivity.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void goToMenuActivity(AppCompatActivity self){
+        this.goToActivity(self, MenuActivity.class);
     }
 }

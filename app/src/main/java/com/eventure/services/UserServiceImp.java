@@ -10,6 +10,7 @@ import com.eventure.model.User;
 import java.util.function.UnaryOperator;
 
 public class UserServiceImp implements UserService {
+
     DaoFactory daoFactory;
     UnaryOperator<String> passwordHasher;
 

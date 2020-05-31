@@ -5,10 +5,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-
 public class CalendarController extends FrontController {
 
     public static CalendarController instance;
@@ -22,6 +18,11 @@ public class CalendarController extends FrontController {
     }
 
     ////////// static line //////////
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected CalendarController(){ super(); }
+
+    ///// ///// controller ///// /////
 
     // public Map<Date, Collection<Color>> getColors(Date
 }
