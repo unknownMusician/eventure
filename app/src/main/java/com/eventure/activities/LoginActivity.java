@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
+import com.eventure.controller.FrontController;
 import com.eventure.dao.DaoFactory;
 import com.eventure.inmemory.InMemoryDaoFactory;
 import com.eventure.inmemory.InMemoryDatabase;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         InMemoryDatabase database = initDatabase();
         DaoFactory daoFactory = new InMemoryDaoFactory(database);
-        UserService userService = new UserServiceImp(daoFactory, UnaryOperator.identity());
+        final UserService userService = new UserServiceImp(daoFactory, UnaryOperator.identity());
 
         Button signInBtn = findViewById(R.id.btnSignIn);
         signInBtn.setOnClickListener(new View.OnClickListener() {
@@ -44,11 +45,12 @@ public class LoginActivity extends AppCompatActivity {
                 EditText mPassword = findViewById(R.id.passwordText);
                 String login = mLogin.getText().toString();
                 String password = mPassword.getText().toString();
+
                 User currentUser = userService.getByLogin(login);
                 Log.d(TAG, "onClick: " + login);
                 if (!(login.equals("") && password.equals(""))) {
                     if (currentUser != null) {
-                        if (userService.checkPassword(currentUser, password) == true) {
+                        if (userService.checkPassword(currentUser, password)) {
                             toastMessage("You have sign in");
                         } else {
                             toastMessage("Wrong Password");
@@ -77,5 +79,6 @@ public class LoginActivity extends AppCompatActivity {
     private void toastMessage(String message){
         Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
 
+        FrontController.getInstance().print("HUY");
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.eventure.R;
+import com.eventure.controller.FrontController;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,9 +20,7 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
 
