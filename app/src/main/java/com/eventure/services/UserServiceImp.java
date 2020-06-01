@@ -28,7 +28,11 @@ public class UserServiceImp implements UserService {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean checkPassword(User user, String password) {
-        return user.getPassword().equals(passwordHasher.apply(password));
+        if (user.getPassword().equals(passwordHasher.apply(password))){
+            UserHolder.set(user);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -41,7 +45,20 @@ public class UserServiceImp implements UserService {
     public boolean exist(String name) {
         return getByLogin(name) != null;
     }
+
     public ArrayList<User> getAllUsers(){
         return new ArrayList<>(daoFactory.getUserDao().findAll());
+    }
+
+    public static class UserHolder {
+        private static User user;
+
+        public static User get(){
+            return user;
+        }
+
+        public static void set(User user){
+            UserHolder.user = user;
+        }
     }
 }

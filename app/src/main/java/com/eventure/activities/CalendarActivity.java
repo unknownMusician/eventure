@@ -41,7 +41,11 @@ public class CalendarActivity extends AppCompatActivity {
         calendar = findViewById(R.id.compactcalendar_view);
         calendar.setUseThreeLetterAbbreviation(true);
 
+
         Event ev1 = new Event(Color.RED, 1591011144000L, "Teachers' Professional Day");
+
+        Event ev2 = new Event(Color.RED, 1591153200L, "Teachers' Professional Day");
+
         calendar.addEvent(ev1);
 
         // Lection type - 1
