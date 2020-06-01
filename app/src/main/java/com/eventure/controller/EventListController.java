@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.activities.*;
 import com.eventure.model.Event;
+import com.eventure.services.EventService;
 import com.eventure.services.ServiceFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EventListController extends FrontController {
 
@@ -32,5 +34,15 @@ public class EventListController extends FrontController {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<Event> getAllEvents(){
         return ServiceFactory.get().getEventService().getEventList();
+    }
+
+    public ArrayList<Event> getAllEvents(String dayStr, String monthStr, String yearStr){
+        int day = Integer.parseInt(dayStr);
+        int month = Integer.parseInt(monthStr);
+        int year = Integer.parseInt(yearStr);
+
+        Date date = new Date(year, month, day);
+
+        return serviceFactory.getEventService().getFilteredByDate(date);
     }
 }

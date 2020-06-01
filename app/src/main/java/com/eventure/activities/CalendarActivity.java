@@ -35,7 +35,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendar = findViewById(R.id.compactcalendar_view);
         calendar.setUseThreeLetterAbbreviation(true);
 
-        Event ev1 = new Event(Color.RED, 1477054800000L, "Teachers' Professional Day");
+        Event ev1 = new Event(Color.RED, 1591153200L, "Teachers' Professional Day");
         calendar.addEvent(ev1);
 
         calendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
