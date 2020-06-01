@@ -36,7 +36,7 @@ public interface EventService {
         My
     }
 
-    ArrayList<MyEvent> getSortedBy(SortType sortType);
+    ArrayList<MyEvent> getSortedBy(SortType sortType,ArrayList<MyEvent> events);
 
     static enum SortType {
         TimeClosestFirst,

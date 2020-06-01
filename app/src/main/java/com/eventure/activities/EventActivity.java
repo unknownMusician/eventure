@@ -24,9 +24,8 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        int idOfEvent = Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("idOfEvent")));
 
-        MyEvent event = ControllerFactory.get().getEventListController().getAllEvents().get(idOfEvent);
+        MyEvent event = (MyEvent)getIntent().getSerializableExtra(MyEvent.class.getName());
 
         TextView title = findViewById(R.id.eventTitleTextView);
         TextView description = findViewById(R.id.eventDescriptionTextView);

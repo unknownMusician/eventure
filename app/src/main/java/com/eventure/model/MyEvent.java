@@ -1,9 +1,10 @@
 package com.eventure.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MyEvent {
+public class MyEvent implements Serializable {
 
     private Integer eventId;
     private String title;

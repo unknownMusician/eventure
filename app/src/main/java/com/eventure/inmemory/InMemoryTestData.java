@@ -15,17 +15,17 @@ public class InMemoryTestData {
         User john = new User(2,"john","123");
         User mike = new User(3,"mike","123");
 
-        MyEvent event = new MyEvent(0,"KPI",
+        MyEvent event = new MyEvent(0,"First Event",
+                "Nothing there",120,0,14,12,30,
+                "First Event",1);
+        MyEvent event1 = new MyEvent(1,"Event",
                 "Nothing there",120,0,12,12,30,
-                "KPI",1);
-        MyEvent event1 = new MyEvent(1,"KPI",
-                "Nothing there",120,0,12,12,30,
-                "KPI",2);
-        MyEvent event3 = new MyEvent(2,"KPI",
-                "Nothing there",120,0,12,12,30,
-                "KPI",4);
+                "Event ",2);
+        MyEvent event3 = new MyEvent(2,"Third Event",
+                "Nothing there",120,0,11,12,30,
+                "Third Event",4);
         MyEvent event2 = new MyEvent(3,"KPI",
-                "Nothing there",120,0,12,12,30,
+                "Nothing there",120,0,17,12,30,
                 "KPI",3);
         MyEvent borispol = new MyEvent(4,"Borispol HYPE",
                 "TU-TU-TUTUTUTUTUTU",120,5,2,12,30,

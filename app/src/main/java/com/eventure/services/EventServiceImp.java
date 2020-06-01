@@ -11,10 +11,12 @@ import com.eventure.model.MyEvent;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -138,10 +140,10 @@ public class EventServiceImp implements EventService {
     ////////// ↓↓↓↓↓↓ //////////
 
     @Override
-    public ArrayList<MyEvent> getSortedBy(SortType sortType) {
+    public ArrayList<MyEvent> getSortedBy(SortType sortType,ArrayList events) {
         switch (sortType) {
             case TimeClosestFirst:
-                return getSortedByTimeClosest();
+                return getSortedByTimeClosest(events);
             case TimeFurthestFirst:
                 return getSortedByTimeFurthest();
             case DistClosestFirst:
@@ -216,16 +218,27 @@ public class EventServiceImp implements EventService {
     }
 
     public boolean hasDateAnEvents(int year,int month,int day){
-        if(!getFilteredByDate(year,month,day).isEmpty()){
-            return true;
-        }
-        return false;
-
+        return !getFilteredByDate(year, month, day).isEmpty();
     }
 
 
-    protected ArrayList<MyEvent> getSortedByTimeClosest() {
-        return null;
+    public ArrayList<MyEvent> getSortedByTimeClosest(ArrayList<MyEvent> events) {
+        ArrayList<MyEvent> sortedEvents = new ArrayList<>();
+       /* long[] times = new long[events.size()];
+
+        for (int i = 0; i < times.length ; i++) {
+            times[i] = events.get(i).getTime().getTime();
+        }
+        Arrays.sort(times);
+        ArrayList<MyEvent> sortedEvents = new ArrayList<>();
+        for (int i = 0; i <times.length ; i++) {
+                if (events.get(i).getTime().getTime()==times[i]){
+                    sortedEvents.add(events.get(i));
+            }
+        }
+
+        */
+        return sortedEvents;
     }
 
     protected ArrayList<MyEvent> getSortedByTimeFurthest() {
