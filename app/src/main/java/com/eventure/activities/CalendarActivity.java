@@ -46,15 +46,20 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onDayClick(Date dateClicked) {
                 Context context = getApplicationContext();
-                Toast.makeText(context,"Hello!",Toast.LENGTH_SHORT).show();
                 Integer year = dateClicked.getYear();
                 Integer month = dateClicked.getMonth();
                 Integer day = dateClicked.getDate();
                 Intent intent = new Intent(CalendarActivity.this,EventListActivity.class);
-                intent.putExtra("year",year.toString());
-                intent.putExtra("month",month.toString());
-                intent.putExtra("day",day.toString());
-                startActivity(intent);
+                if(ServiceFactory.get().getEventService().hasDateAnEvents(year,month,day)){
+                    intent.putExtra("year",year.toString());
+                    intent.putExtra("month",month.toString());
+                    intent.putExtra("day",day.toString());
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(context,"There are no events on this day",Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
