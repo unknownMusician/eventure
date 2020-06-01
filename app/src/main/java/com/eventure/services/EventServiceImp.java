@@ -13,6 +13,7 @@ import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -67,6 +68,7 @@ public class EventServiceImp implements EventService {
         return eventOnThisDate;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public ArrayList<MyEvent> getFilteredBy(FilterType sortType) {
         switch (sortType) {
@@ -84,24 +86,49 @@ public class EventServiceImp implements EventService {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected ArrayList<MyEvent> getFilteredByToday() {
-        return null;
+        LocalDate currentDate = java.time.LocalDate.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue() - 1;
+        int day = currentDate.getDayOfMonth();
+        return getFilteredByDate(year,month,day);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected ArrayList<MyEvent> getFilteredByThisWeek() {
-        return null;
+        ArrayList<MyEvent> eventOnThisWeek = new ArrayList<>();
+        LocalDate currentDate = java.time.LocalDate.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue() - 1;
+        int date = currentDate.getDayOfMonth();
+        for (int i = 0; i < 8 ; i++) {
+            eventOnThisWeek.addAll(getFilteredByDate(year,month,date+i));
+        }
+        return eventOnThisWeek;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected ArrayList<MyEvent> getFilteredByThisMonth() {
-        return null;
+        ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
+        ArrayList<MyEvent> eventsOnThisMonth = new ArrayList<>();
+        LocalDate currentDate = java.time.LocalDate.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue() - 1;
+        for (MyEvent event : events) {
+            if (event.getTime().getYear() == year && event.getTime().getMonth() == month) {
+                eventsOnThisMonth.add(event);
+            }
+        }
+        return eventsOnThisMonth;
     }
 
     protected ArrayList<MyEvent> getFilteredByFavourite() {
-        return null;
+        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
     }
 
     protected ArrayList<MyEvent> getFilteredByMy() {
-        return null;
+        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.get().getUserEvents());
     }
 
     ////////// ↑↑↑↑↑↑ //////////
@@ -188,8 +215,13 @@ public class EventServiceImp implements EventService {
         return type;
     }
 
+    public boolean hasDateAnEvents(int year,int month,int day){
+        if(!getFilteredByDate(year,month,day).isEmpty()){
+            return true;
+        }
+        return false;
 
-
+    }
 
 
     protected ArrayList<MyEvent> getSortedByTimeClosest() {
