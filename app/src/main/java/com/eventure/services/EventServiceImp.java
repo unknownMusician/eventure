@@ -60,7 +60,7 @@ public class EventServiceImp implements EventService {
         ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
         ArrayList<MyEvent> eventOnThisDate = new ArrayList<>();
         for (MyEvent event : events) {
-            if (event.getTime().getYear() == year && event.getTime().getMonth() == month
+            if (event.getTime().getYear() == year-1900 && event.getTime().getMonth() == month - 1
                     && event.getTime().getDate() == day) {
                 eventOnThisDate.add(event);
             }
@@ -87,20 +87,20 @@ public class EventServiceImp implements EventService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected ArrayList<MyEvent> getFilteredByToday() {
+    public ArrayList<MyEvent> getFilteredByToday() {
         LocalDate currentDate = java.time.LocalDate.now();
         int year = currentDate.getYear();
-        int month = currentDate.getMonthValue() - 1;
+        int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth();
         return getFilteredByDate(year,month,day);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected ArrayList<MyEvent> getFilteredByThisWeek() {
+    public ArrayList<MyEvent> getFilteredByThisWeek() {
         ArrayList<MyEvent> eventOnThisWeek = new ArrayList<>();
         LocalDate currentDate = java.time.LocalDate.now();
         int year = currentDate.getYear();
-        int month = currentDate.getMonthValue() - 1;
+        int month = currentDate.getMonthValue();
         int date = currentDate.getDayOfMonth();
         for (int i = 0; i < 8 ; i++) {
             eventOnThisWeek.addAll(getFilteredByDate(year,month,date+i));
@@ -109,21 +109,21 @@ public class EventServiceImp implements EventService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected ArrayList<MyEvent> getFilteredByThisMonth() {
+    public ArrayList<MyEvent> getFilteredByThisMonth() {
         ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
         ArrayList<MyEvent> eventsOnThisMonth = new ArrayList<>();
         LocalDate currentDate = java.time.LocalDate.now();
         int year = currentDate.getYear();
-        int month = currentDate.getMonthValue() - 1;
+        int month = currentDate.getMonthValue();
         for (MyEvent event : events) {
-            if (event.getTime().getYear() == year && event.getTime().getMonth() == month) {
+            if (event.getTime().getYear() == year - 1900 && event.getTime().getMonth() == month - 1) {
                 eventsOnThisMonth.add(event);
             }
         }
         return eventsOnThisMonth;
     }
 
-    protected ArrayList<MyEvent> getFilteredByFavourite() {
+    public ArrayList<MyEvent> getFilteredByFavourite() {
         return new ArrayList<MyEvent>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
     }
 

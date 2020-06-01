@@ -27,7 +27,9 @@ public class InMemoryTestData {
         MyEvent event2 = new MyEvent(3,"KPI",
                 "Nothing there",120,0,12,12,30,
                 "KPI",3);
-
+        MyEvent borispol = new MyEvent(4,"Borispol HYPE",
+                "TU-TU-TUTUTUTUTUTU",120,5,2,12,30,
+                "KPI",3);
 
         database.users.put(sabrina.getUserId(),sabrina);
         database.users.put(jake.getUserId(),jake);
@@ -37,6 +39,7 @@ public class InMemoryTestData {
         database.events.put(event1.getEventId(),event1);
         database.events.put(event2.getEventId(),event2);
         database.events.put(event3.getEventId(),event3);
+        database.events.put(borispol.getEventId(),borispol);
     }
 
 

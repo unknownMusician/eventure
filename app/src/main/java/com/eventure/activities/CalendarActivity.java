@@ -46,9 +46,10 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onDayClick(Date dateClicked) {
                 Context context = getApplicationContext();
-                Integer year = dateClicked.getYear();
-                Integer month = dateClicked.getMonth();
+                Integer year = dateClicked.getYear() + 1900; // To convert it to our time 120 + 1900 = 2020
+                Integer month = dateClicked.getMonth() + 1; // Same
                 Integer day = dateClicked.getDate();
+                Log.d(TAG, "onDayClick: " + year + " " + month + " " + day);
                 Intent intent = new Intent(CalendarActivity.this,EventListActivity.class);
                 if(ServiceFactory.get().getEventService().hasDateAnEvents(year,month,day)){
                     intent.putExtra("year",year.toString());

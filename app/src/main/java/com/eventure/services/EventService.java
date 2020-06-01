@@ -19,6 +19,10 @@ public interface EventService {
     int getEventColor(MyEvent event);
     String getEventStringType(MyEvent event);
     boolean hasDateAnEvents(int year,int month,int day);
+    ArrayList<MyEvent> getFilteredByToday();
+    ArrayList<MyEvent> getFilteredByThisWeek();
+    ArrayList<MyEvent> getFilteredByThisMonth();
+    ArrayList<MyEvent> getFilteredByFavourite();
 
 
     ArrayList<MyEvent> getFilteredByDate(int year,int month,int day);

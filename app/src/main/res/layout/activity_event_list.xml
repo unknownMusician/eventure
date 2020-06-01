@@ -6,36 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/titleListEventTextView"
+        android:layout_width="256dp"
+        android:layout_height="71dp"
+        android:fontFamily="@font/abril_fatface"
+        android:gravity="center"
+        android:text="@string/list_of_events"
+        android:textAlignment="center"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.053" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <ListView
+        android:id="@+id/listOfEventsList"
+        android:layout_width="409dp"
+        android:layout_height="626dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleListEventTextView"
+        app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/listOfEventsTextView"
-                android:layout_width="match_parent"
-                android:layout_height="74dp"
-                android:fontFamily="@font/abril_fatface"
-                android:text="@string/list_of_events"
-                android:textAlignment="center"
-                android:textSize="36sp" />
-
-            <ListView
-                android:id="@+id/listOfEventsList"
-                android:layout_width="match_parent"
-                android:layout_height="711dp" />
-
-        </LinearLayout>
-    </ScrollView>
-
+    <Spinner
+        android:id="@+id/eventFilterSpinner"
+        android:layout_width="154dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="44dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/titleListEventTextView"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
