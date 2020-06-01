@@ -3,27 +3,20 @@ package com.eventure.services;
 import com.eventure.model.MyEvent;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 
-public interface EventService {
-
-    ArrayList<MyEvent> getEventList();
-    ArrayList<String> getEventTitleList();
-    MyEvent search(String title);
-=======
 import java.util.Collection;
 import java.util.Date;
 
 public interface EventService {
 
-    ArrayList<Event> getEventList();
+    ArrayList<MyEvent> getEventList();
 
     ArrayList<String> getEventTitleList();
 
-    Event search(String title);
+    MyEvent search(String title);
 
-    ArrayList<Event> getFilteredByDate(Date date);
-    ArrayList<Event> getFilteredBy(FilterType sortType);
+    ArrayList<MyEvent> getFilteredByDate(Date date);
+    ArrayList<MyEvent> getFilteredBy(FilterType sortType);
 
     static enum FilterType {
         Today,
@@ -33,7 +26,7 @@ public interface EventService {
         My
     }
 
-    ArrayList<Event> getSortedBy(SortType sortType);
+    ArrayList<MyEvent> getSortedBy(SortType sortType);
 
     static enum SortType {
         TimeClosestFirst,
@@ -41,5 +34,4 @@ public interface EventService {
         DistClosestFirst,
         DistFarthestFirst
     }
->>>>>>> 86bcdce0f54f4ae1431b673529b89f876cd10b11
 }

@@ -8,11 +8,8 @@ import com.eventure.dao.DaoFactory;
 import com.eventure.model.MyEvent;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
 import java.util.Collection;
 import java.util.Date;
->>>>>>> 86bcdce0f54f4ae1431b673529b89f876cd10b11
 import java.util.stream.Collectors;
 
 public class EventServiceImp implements EventService {
@@ -24,13 +21,9 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-<<<<<<< HEAD
+
     public ArrayList<MyEvent> getEventList() {
-        ArrayList<MyEvent> events =  new ArrayList<>(daoFactory.getEventDao().findAll());
-=======
-    public ArrayList<Event> getEventList() {
-        ArrayList<Event> events = new ArrayList<>(daoFactory.getEventDao().findAll());
->>>>>>> 86bcdce0f54f4ae1431b673529b89f876cd10b11
+        ArrayList<MyEvent> events = new ArrayList<>(daoFactory.getEventDao().findAll());
         return events;
     }
 
@@ -56,12 +49,12 @@ public class EventServiceImp implements EventService {
     ////////// ↓↓↓↓↓↓ //////////
 
     @Override
-    public ArrayList<Event> getFilteredByDate(Date date) {
+    public ArrayList<MyEvent> getFilteredByDate(Date date) {
         return null;
     }
 
     @Override
-    public ArrayList<Event> getFilteredBy(FilterType sortType) {
+    public ArrayList<MyEvent> getFilteredBy(FilterType sortType) {
         switch (sortType) {
             case Today:
                 return getFilteredByToday();
@@ -77,23 +70,23 @@ public class EventServiceImp implements EventService {
         return null;
     }
 
-    protected ArrayList<Event> getFilteredByToday() {
+    protected ArrayList<MyEvent> getFilteredByToday() {
         return null;
     }
 
-    protected ArrayList<Event> getFilteredByThisWeek() {
+    protected ArrayList<MyEvent> getFilteredByThisWeek() {
         return null;
     }
 
-    protected ArrayList<Event> getFilteredByThisMonth() {
+    protected ArrayList<MyEvent> getFilteredByThisMonth() {
         return null;
     }
 
-    protected ArrayList<Event> getFilteredByFavourite() {
+    protected ArrayList<MyEvent> getFilteredByFavourite() {
         return null;
     }
 
-    protected ArrayList<Event> getFilteredByMy() {
+    protected ArrayList<MyEvent> getFilteredByMy() {
         return null;
     }
 
@@ -104,7 +97,7 @@ public class EventServiceImp implements EventService {
     ////////// ↓↓↓↓↓↓ //////////
 
     @Override
-    public ArrayList<Event> getSortedBy(SortType sortType) {
+    public ArrayList<MyEvent> getSortedBy(SortType sortType) {
         switch (sortType) {
             case TimeClosestFirst:
                 return getSortedByTimeClosest();
@@ -118,19 +111,19 @@ public class EventServiceImp implements EventService {
         return null;
     }
 
-    protected ArrayList<Event> getSortedByTimeClosest() {
+    protected ArrayList<MyEvent> getSortedByTimeClosest() {
         return null;
     }
 
-    protected ArrayList<Event> getSortedByTimeFurthest() {
+    protected ArrayList<MyEvent> getSortedByTimeFurthest() {
         return null;
     }
 
-    protected ArrayList<Event> getSortedByDistClosest() {
+    protected ArrayList<MyEvent> getSortedByDistClosest() {
         return null;
     }
 
-    protected ArrayList<Event> getSortedByDistFarthest() {
+    protected ArrayList<MyEvent> getSortedByDistFarthest() {
         return null;
     }
 }

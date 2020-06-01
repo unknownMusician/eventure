@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.activities.*;
 import com.eventure.model.MyEvent;
-import com.eventure.model.Event;
+
 import com.eventure.services.EventService;
 import com.eventure.services.ServiceFactory;
 
@@ -37,7 +37,7 @@ public class EventListController extends FrontController {
         return ServiceFactory.get().getEventService().getEventList();
     }
 
-    public ArrayList<Event> getAllEvents(String dayStr, String monthStr, String yearStr){
+    public ArrayList<MyEvent> getAllEvents(String dayStr, String monthStr, String yearStr){
         int day = Integer.parseInt(dayStr);
         int month = Integer.parseInt(monthStr);
         int year = Integer.parseInt(yearStr);

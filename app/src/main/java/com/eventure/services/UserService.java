@@ -1,6 +1,5 @@
 package com.eventure.services;
 
-import com.eventure.model.Event;
 import com.eventure.model.User;
 
 import java.util.ArrayList;
