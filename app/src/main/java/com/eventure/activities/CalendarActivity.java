@@ -54,6 +54,7 @@ public class CalendarActivity extends AppCompatActivity {
                     intent.putExtra("year",year.toString());
                     intent.putExtra("month",month.toString());
                     intent.putExtra("day",day.toString());
+                    Toast.makeText(context,"All events for this day",Toast.LENGTH_SHORT);
                     startActivity(intent);
                 }
                 else{
