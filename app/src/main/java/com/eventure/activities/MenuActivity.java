@@ -39,6 +39,8 @@ public class MenuActivity extends AppCompatActivity {
                     ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, EventListActivity.class);
                 }else if(position == 1){
                     ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, CalendarActivity.class);
+                }else if(position == 2){
+                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, MapsActivity.class);
                 }
             }
         });
