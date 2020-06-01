@@ -34,9 +34,9 @@
 
     <Spinner
         android:id="@+id/eventFilterSpinner"
-        android:layout_width="154dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="148dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
