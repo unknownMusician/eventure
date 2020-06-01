@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
+import com.eventure.services.ServiceFactory;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity" ;
@@ -30,10 +31,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(ControllerFactory.get().getRegisterController().registerUser(mLogin,mPassword)){
                     toastMessage("You have successfully created an account");
-                    Log.d(TAG, "onClick: ");
+                    Log.d(TAG, "onClick: " + ServiceFactory.get().getUserService().getAllUsers());
                 }
                 else{
                     toastMessage("Sorry the is trouble!");
+                    Log.d(TAG, "onClick: " + ServiceFactory.get().getUserService().getAllUsers());
                 }
             }
         });

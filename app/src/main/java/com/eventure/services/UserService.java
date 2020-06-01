@@ -15,4 +15,5 @@ public interface UserService {
     void createUser(String name, String password);
 
     boolean exist(String name);
+    ArrayList<User> getAllUsers();
 }
