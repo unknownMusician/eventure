@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
 import com.eventure.model.MyEvent;
+import com.eventure.services.ServiceFactory;
+
+import java.util.Objects;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -21,13 +24,20 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        Integer idOfEvent = Integer.parseInt(getIntent().getStringExtra("idOfEvent"));
+        int idOfEvent = Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("idOfEvent")));
 
         MyEvent event = ControllerFactory.get().getEventListController().getAllEvents().get(idOfEvent);
 
         TextView title = findViewById(R.id.eventTitleTextView);
         TextView description = findViewById(R.id.eventDescriptionTextView);
         TextView time = findViewById(R.id.eventTimeTextView);
+        TextView type = findViewById(R.id.eventTypeTextView);
+
+        String typeStr = ServiceFactory.get().getEventService().getEventStringType(event);
+        int colorOfEvent = ServiceFactory.get().getEventService().getEventColor(event);
+
+        type.setText(typeStr);
+        type.setTextColor(colorOfEvent);
 
         title.setText(event.getTitle());
         description.setText(event.getDescription());

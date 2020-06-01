@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 Log.d(TAG, "onClick: Hello!");
 
-
                 if(ControllerFactory.get().getLoginController().checkUserLoginAttributes(mLogin,mPassword)){
                     toastMessage("You sign it!");
                 }

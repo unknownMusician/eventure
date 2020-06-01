@@ -1,12 +1,18 @@
 package com.eventure.services;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.eventure.dao.DaoFactory;
 import com.eventure.model.MyEvent;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -29,8 +35,8 @@ public class EventServiceImp implements EventService {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public ArrayList<String> getEventTitleList() {
-        return getEventList().stream().map(MyEvent::getTitle).collect(Collectors.toCollection(ArrayList::new));
+    public ArrayList<String> getEventTitleList(ArrayList<MyEvent> events) {
+        return events.stream().map(MyEvent::getTitle).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
@@ -49,8 +55,16 @@ public class EventServiceImp implements EventService {
     ////////// ↓↓↓↓↓↓ //////////
 
     @Override
-    public ArrayList<MyEvent> getFilteredByDate(Date date) {
-        return null;
+    public ArrayList<MyEvent> getFilteredByDate(int year, int month, int day) {
+        ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
+        ArrayList<MyEvent> eventOnThisDate = new ArrayList<>();
+        for (MyEvent event : events) {
+            if (event.getTime().getYear() == year && event.getTime().getMonth() == month
+                    && event.getTime().getDate() == day) {
+                eventOnThisDate.add(event);
+            }
+        }
+        return eventOnThisDate;
     }
 
     @Override
@@ -110,6 +124,73 @@ public class EventServiceImp implements EventService {
         }
         return null;
     }
+
+    public void addEventsOnCalendar(CompactCalendarView calendar) {
+        // Lection type - 1
+        // Disscution type - 2
+        // Party type - 3
+        // Other type - 4
+        ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
+        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        for (int i = 0; i < events.size(); i++) {
+            long timeOfEvent = 0;
+            try {
+                timeOfEvent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+                        .parse(format1.format(events.get(i).getTime())).getTime();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int colorOfEvent = getEventColor(events.get(i));
+
+
+            Event event = new Event(colorOfEvent, timeOfEvent, "Bitches");
+            calendar.addEvent(event);
+        }
+
+    }
+
+    public int getEventColor(MyEvent event) {
+        int colorOfEvent = 0;
+        switch (event.getType()) {
+            case 1:
+                colorOfEvent = Color.BLUE;
+                break;
+            case 2:
+                colorOfEvent = Color.rgb(32,165,35);
+                break;
+            case 3:
+                colorOfEvent = Color.rgb(207,204,29);
+                break;
+            case 4:
+                colorOfEvent = Color.RED;
+                break;
+        }
+        return colorOfEvent;
+    }
+
+    public String getEventStringType(MyEvent event) {
+        String type = "";
+        switch (event.getType()) {
+            case 1:
+                type = "Lecture";
+                break;
+            case 2:
+                type = "Discussion";
+                break;
+            case 3:
+                type = "Party";
+                break;
+            case 4:
+                type = "Other";
+                break;
+        }
+        return type;
+    }
+
+
+
+
 
     protected ArrayList<MyEvent> getSortedByTimeClosest() {
         return null;

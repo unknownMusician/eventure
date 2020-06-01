@@ -17,8 +17,8 @@ import java.util.Date;
 public class EventListController extends FrontController {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public ArrayList<String> getEventTitleList(){
-        return serviceFactory.getEventService().getEventTitleList();
+    public ArrayList<String> getEventTitleList(ArrayList<MyEvent> events){
+        return serviceFactory.getEventService().getEventTitleList(events);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -42,8 +42,6 @@ public class EventListController extends FrontController {
         int month = Integer.parseInt(monthStr);
         int year = Integer.parseInt(yearStr);
 
-        Date date = new Date(year, month, day);
-
-        return serviceFactory.getEventService().getFilteredByDate(date);
+        return serviceFactory.getEventService().getFilteredByDate(year,month,day);
     }
 }
