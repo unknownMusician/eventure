@@ -41,6 +41,7 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
+
         <activity android:name=".activities.CalendarActivity" />
         <activity android:name=".activities.EventActivity" />
         <activity android:name=".activities.MainActivity">

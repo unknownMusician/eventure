@@ -1,20 +1,19 @@
 package com.eventure.model;
 
 
-
 import java.util.Date;
 
-public class Event {
+public class MyEvent {
 
     private Integer eventId;
     private String title;
     private String description;
     private Date time;
     private String place;
-    private String type;
+    private int type;
 
-    public Event(Integer eventId, String title, String description,int year,int month,int date,
-                 int hour,int min, String place, String type) {
+    public MyEvent(Integer eventId, String title, String description, int year, int month, int date,
+                   int hour, int min, String place, int type) {
         this.eventId = eventId;
         this.title = title;
         this.description = description;
@@ -73,11 +72,11 @@ public class Event {
         this.place = place;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

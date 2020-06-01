@@ -1,6 +1,6 @@
 package com.eventure.inmemory;
 
-import com.eventure.model.Event;
+import com.eventure.model.MyEvent;
 import com.eventure.model.User;
 
 public class InMemoryTestData {
@@ -15,16 +15,28 @@ public class InMemoryTestData {
         User john = new User(2,"john","123");
         User mike = new User(3,"mike","123");
 
-        Event event = new Event(0,"KPI",
-                "Nothing there",2020,6,1,12,30,
-                "KPI","project");
+        MyEvent event = new MyEvent(0,"KPI",
+                "Nothing there",120,0,12,12,30,
+                "KPI",1);
+        MyEvent event1 = new MyEvent(1,"KPI",
+                "Nothing there",120,0,12,12,30,
+                "KPI",2);
+        MyEvent event3 = new MyEvent(2,"KPI",
+                "Nothing there",120,0,12,12,30,
+                "KPI",4);
+        MyEvent event2 = new MyEvent(3,"KPI",
+                "Nothing there",120,0,12,12,30,
+                "KPI",3);
+
 
         database.users.put(sabrina.getUserId(),sabrina);
         database.users.put(jake.getUserId(),jake);
         database.users.put(john.getUserId(),john);
         database.users.put(mike.getUserId(),mike);
         database.events.put(event.getEventId(),event);
-        database.events.put(event.getEventId(),event);
+        database.events.put(event1.getEventId(),event1);
+        database.events.put(event2.getEventId(),event2);
+        database.events.put(event3.getEventId(),event3);
     }
 
 

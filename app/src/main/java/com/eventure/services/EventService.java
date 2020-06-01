@@ -1,21 +1,26 @@
 package com.eventure.services;
 
-import com.eventure.model.Event;
+import com.eventure.model.MyEvent;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.Date;
 
 public interface EventService {
 
-    ArrayList<Event> getEventList();
+    ArrayList<MyEvent> getEventList();
 
-    ArrayList<String> getEventTitleList();
+    ArrayList<String> getEventTitleList(ArrayList<MyEvent> events);
 
-    Event search(String title);
+    void addEventsOnCalendar(CompactCalendarView calendar);
+    MyEvent search(String title);
+    int getEventColor(MyEvent event);
+    String getEventStringType(MyEvent event);
 
-    ArrayList<Event> getFilteredByDate(Date date);
-    ArrayList<Event> getFilteredBy(FilterType sortType);
+    ArrayList<MyEvent> getFilteredByDate(int year,int month,int day);
+    ArrayList<MyEvent> getFilteredBy(FilterType sortType);
 
     static enum FilterType {
         Today,
@@ -25,7 +30,7 @@ public interface EventService {
         My
     }
 
-    ArrayList<Event> getSortedBy(SortType sortType);
+    ArrayList<MyEvent> getSortedBy(SortType sortType);
 
     static enum SortType {
         TimeClosestFirst,
