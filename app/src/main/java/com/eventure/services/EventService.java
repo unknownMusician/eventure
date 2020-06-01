@@ -1,13 +1,12 @@
 package com.eventure.services;
 
-import com.eventure.model.Event;
+import com.eventure.model.MyEvent;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public interface EventService {
 
-    ArrayList<Event> getEventList();
+    ArrayList<MyEvent> getEventList();
     ArrayList<String> getEventTitleList();
-    Event search(String title);
+    MyEvent search(String title);
 }

@@ -3,18 +3,13 @@ package com.eventure.activities;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
-import com.eventure.model.Event;
-import com.eventure.services.ServiceFactory;
-
-import java.util.ArrayList;
+import com.eventure.model.MyEvent;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -28,7 +23,7 @@ public class EventActivity extends AppCompatActivity {
 
         Integer idOfEvent = Integer.parseInt(getIntent().getStringExtra("idOfEvent"));
 
-        Event event = ControllerFactory.get().getEventListController().getAllEvents().get(idOfEvent);
+        MyEvent event = ControllerFactory.get().getEventListController().getAllEvents().get(idOfEvent);
 
         TextView title = findViewById(R.id.eventTitleTextView);
         TextView description = findViewById(R.id.eventDescriptionTextView);

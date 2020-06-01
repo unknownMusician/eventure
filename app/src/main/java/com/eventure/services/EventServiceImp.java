@@ -5,11 +5,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.eventure.dao.DaoFactory;
-import com.eventure.model.Event;
+import com.eventure.model.MyEvent;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class EventServiceImp implements EventService {
@@ -21,20 +19,20 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public ArrayList<Event> getEventList() {
-        ArrayList<Event> events =  new ArrayList<>(daoFactory.getEventDao().findAll());
+    public ArrayList<MyEvent> getEventList() {
+        ArrayList<MyEvent> events =  new ArrayList<>(daoFactory.getEventDao().findAll());
         return events;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public ArrayList<String> getEventTitleList() {
-        return getEventList().stream().map(Event::getTitle).collect(Collectors.toCollection(ArrayList::new));
+        return getEventList().stream().map(MyEvent::getTitle).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
-    public Event search(String title) {
-        ArrayList<Event> events = new ArrayList<>(getEventList());
+    public MyEvent search(String title) {
+        ArrayList<MyEvent> events = new ArrayList<>(getEventList());
         int size = events.size();
         for (int i = 0; i < size; i++) {
             if (events.get(i).getTitle().equals(title)) {

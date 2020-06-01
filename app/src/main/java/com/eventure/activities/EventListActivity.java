@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -16,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.EventListController;
-import com.eventure.model.Event;
 
 import java.util.ArrayList;
 

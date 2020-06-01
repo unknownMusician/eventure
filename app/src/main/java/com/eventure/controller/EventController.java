@@ -6,20 +6,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.activities.MenuActivity;
-import com.eventure.model.Event;
-import com.eventure.services.EventService;
-import com.eventure.services.ServiceFactory;
+import com.eventure.model.MyEvent;
 
 public class EventController extends FrontController {
 
-    private Event event;
+    private MyEvent event;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Event getEvent() {
+    public MyEvent getEvent() {
        return event;
     }
 
-    public void setEvent(Event event){
+    public void setEvent(MyEvent event){
         this.event = event;
     }
 
