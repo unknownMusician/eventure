@@ -59,9 +59,11 @@ public class EventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(currentState == false){
                     ServiceFactory.get().getEventService().addToFavorites(event);
+                    Toast.makeText(EventActivity.this,"Event has been added to your favorites",Toast.LENGTH_SHORT);
                 }
                 else{
                     ServiceFactory.get().getEventService().removeFromFavorites(event);
+                    Toast.makeText(EventActivity.this,"Event has been removed fromzz your favorites",Toast.LENGTH_SHORT);
                 }
 
             }

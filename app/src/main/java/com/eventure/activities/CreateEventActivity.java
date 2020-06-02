@@ -97,15 +97,15 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                     description = descriptionEditText.getText().toString();
                     place = placeEditText.getText().toString();
                     if(title.equals("")||description.equals("")||place.equals("")){
-                        Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT);
+                        Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Intent intent = new Intent(CreateEventActivity.this,EventActivity.class);
                         MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
                         intent.putExtra(MyEvent.class.getName(),newEvent);
+                        Toast.makeText(CreateEventActivity.this,"Your activity has been created!",Toast.LENGTH_SHORT).show();
                         startActivity(intent);
-
                     }
                 }
                 Log.d(TAG, "onClick: " + year + " " + month +  " " + day +" "+ title +" " + description + " " + place );
