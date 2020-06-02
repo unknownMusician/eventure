@@ -35,11 +35,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private static final String TAG = "Create Activity" ;
     Integer type,year,month,day,hour,min;
-    String title,description,place;
+    String title,description;
     EditText titleEditText;
     EditText descriptionEditText;
     EditText placeEditText;
-
+    Place place;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,10 +53,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,types);
         stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTypes.setAdapter(stringArrayAdapter);
-        //ToDo
-        //placeStr = placeEditText.getText().toString();
-        place = new Place(14, 14);
-        //
         Button createEventBtn = findViewById(R.id.createEventBtn);
 
 
@@ -101,7 +97,10 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                     placeEditText = findViewById(R.id.setPlaceEditText);
                     title = titleEditText.getText().toString();
                     description = descriptionEditText.getText().toString();
-                    place = placeEditText.getText().toString();
+                    //ToDo
+                    //place = placeEditText.getText().toString();
+                    place = new Place(14, 14);
+                    //
                     if(title.equals("")||description.equals("")||place.equals("")){
                         Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT).show();
                     }
