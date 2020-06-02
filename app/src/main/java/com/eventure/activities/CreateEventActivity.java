@@ -56,7 +56,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         Button createEventBtn = findViewById(R.id.createEventBtn);
 
 
-
         setDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +107,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                         Intent intent = new Intent(CreateEventActivity.this,EventActivity.class);
                         MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
-                        intent.putExtra(MyEvent.class.getName(),newEvent);
+                        intent.putExtra(MyEvent.class.getSimpleName(),newEvent);
                         Toast.makeText(CreateEventActivity.this,"Your activity has been created!",Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                     }

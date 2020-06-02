@@ -57,8 +57,6 @@ public class EventListActivity extends AppCompatActivity {
         });
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -76,7 +74,6 @@ public class EventListActivity extends AppCompatActivity {
 
         Spinner spinnerFilter = findViewById(R.id.eventFilterSpinner);
         Spinner spinnerSorter = findViewById(R.id.eventSorterSpinner);
-        Log.d(TAG, "onCreate: " + spinnerFilter.getId());
 
         String[] filters = {"All","Today","On week","On month","Favorites"};
         String[] sorters = {"Newest","Oldest"};
@@ -87,9 +84,6 @@ public class EventListActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
-
                 if(position == 0) {
                     if(yearStr != null && monthStr != null && dayStr  != null){
                         Integer year = Integer.parseInt(yearStr);
@@ -169,8 +163,9 @@ public class EventListActivity extends AppCompatActivity {
             @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(EventListActivity.this,EventActivity.class);
-            intent.putExtra(MyEvent.class.getName(),events.get(position));
+            intent.putExtra(MyEvent.class.getSimpleName(),events.get(position));
             startActivity(intent);
+                Log.d(TAG, "onItemClick: " + events.get(position).hashCode());
         }
     });
 

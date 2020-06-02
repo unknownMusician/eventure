@@ -348,7 +348,7 @@ public class EventServiceImp implements EventService {
         if(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents() == null){
             return false;
         }
-        ArrayList<MyEvent> favorites = new ArrayList<>(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
+        ArrayList<MyEvent> favorites = UserServiceImp.UserHolder.getUser().getUserFavoriteEvents();
         return favorites.contains(event);
     }
     public void addToFavorites(MyEvent event){
