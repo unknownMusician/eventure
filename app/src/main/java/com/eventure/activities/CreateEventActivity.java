@@ -35,8 +35,10 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private static final String TAG = "Create Activity" ;
     Integer type,year,month,day,hour,min;
-    String title,description;
-    Place place;
+    String title,description,place;
+    EditText titleEditText;
+    EditText descriptionEditText;
+    EditText placeEditText;
 
 
     @Override
@@ -45,22 +47,19 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         setContentView(R.layout.activity_create_event);
         Button setDateBtn = findViewById(R.id.setDateBtn);
         Button setTimeBtn = findViewById(R.id.setTimeBtn);
+
         String[] types = {"Lecture","Discussion","Party","Other"};
         Spinner spinnerTypes = findViewById(R.id.setTypeSpinner);
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,types);
         stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTypes.setAdapter(stringArrayAdapter);
-        EditText titleEditText = findViewById(R.id.setTitleEditText);
-        EditText descriptionEditText = findViewById(R.id.setDescriptionEditText);
-        EditText placeEditText = findViewById(R.id.setPlaceEditText);
-        title = titleEditText.getText().toString();
-        description = descriptionEditText.getText().toString();
         //ToDo
         //placeStr = placeEditText.getText().toString();
         place = new Place(14, 14);
         //
-
         Button createEventBtn = findViewById(R.id.createEventBtn);
+
+
 
         setDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,18 +96,25 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                     Toast.makeText(CreateEventActivity.this,"You didn`t select the date or time",Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    titleEditText = findViewById(R.id.setTitleEditText);
+                    descriptionEditText = findViewById(R.id.setDescriptionEditText);
+                    placeEditText = findViewById(R.id.setPlaceEditText);
+                    title = titleEditText.getText().toString();
+                    description = descriptionEditText.getText().toString();
+                    place = placeEditText.getText().toString();
                     if(title.equals("")||description.equals("")||place.equals("")){
-                        Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT);
+                        Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Intent intent = new Intent(CreateEventActivity.this,EventActivity.class);
-                        MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type);
+                        MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
                         intent.putExtra(MyEvent.class.getName(),newEvent);
+                        Toast.makeText(CreateEventActivity.this,"Your activity has been created!",Toast.LENGTH_SHORT).show();
                         startActivity(intent);
-
                     }
                 }
+                Log.d(TAG, "onClick: " + year + " " + month +  " " + day +" "+ title +" " + description + " " + place );
             }
         });
 
