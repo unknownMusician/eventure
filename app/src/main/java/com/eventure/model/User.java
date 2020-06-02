@@ -1,5 +1,6 @@
 package com.eventure.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class User {
@@ -7,13 +8,15 @@ public class User {
         this.userId = userId;
         this.login = login;
         this.password = password;
+        userFavoriteEvents = new ArrayList<MyEvent>();
+        userEvents = new ArrayList<MyEvent>();
     }
 
     private Integer userId;
     private String login;
     private String password;
-    private Collection userEvents;
-    private Collection userFavoriteEvents;
+    private ArrayList<MyEvent> userEvents;
+    private ArrayList<MyEvent> userFavoriteEvents;
 
     @Override
     public String toString() {
@@ -48,19 +51,19 @@ public class User {
         this.password = password;
     }
 
-    public Collection getUserEvents() {
+    public ArrayList<MyEvent> getUserEvents() {
         return userEvents;
     }
 
-    public void setUserEvents(Collection userEvents) {
+    public void setUserEvents(ArrayList<MyEvent> userEvents) {
         this.userEvents = userEvents;
     }
 
-    public Collection getUserFavoriteEvents() {
+    public ArrayList<MyEvent> getUserFavoriteEvents() {
         return userFavoriteEvents;
     }
 
-    public void setUserFavoriteEvents(Collection userFavoriteEvents) {
+    public void setUserFavoriteEvents(ArrayList<MyEvent> userFavoriteEvents) {
         this.userFavoriteEvents = userFavoriteEvents;
     }
 

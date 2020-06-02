@@ -7,14 +7,20 @@ import androidx.annotation.RequiresApi;
 
 import com.eventure.dao.DaoFactory;
 import com.eventure.model.MyEvent;
+import com.eventure.model.User;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
+
+import static android.view.View.inflate;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class EventServiceImp implements EventService {
 
@@ -57,8 +63,8 @@ public class EventServiceImp implements EventService {
         ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
         ArrayList<MyEvent> eventOnThisDate = new ArrayList<>();
         for (MyEvent event : events) {
-            if (event.getTime().getYear() == year-1900 && event.getTime().getMonth() == month - 1
-                    && event.getTime().getDate() == day) {
+            if (event.getDate().getYear() == year - 1900 && event.getDate().getMonth() == month - 1
+                    && event.getDate().getDate() == day) {
                 eventOnThisDate.add(event);
             }
         }
@@ -89,7 +95,7 @@ public class EventServiceImp implements EventService {
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         int day = currentDate.getDayOfMonth();
-        return getFilteredByDate(year,month,day);
+        return getFilteredByDate(year, month, day);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -99,8 +105,8 @@ public class EventServiceImp implements EventService {
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         int date = currentDate.getDayOfMonth();
-        for (int i = 0; i < 8 ; i++) {
-            eventOnThisWeek.addAll(getFilteredByDate(year,month,date+i));
+        for (int i = 0; i < 8; i++) {
+            eventOnThisWeek.addAll(getFilteredByDate(year, month, date + i));
         }
         return eventOnThisWeek;
     }
@@ -113,7 +119,7 @@ public class EventServiceImp implements EventService {
         int year = currentDate.getYear();
         int month = currentDate.getMonthValue();
         for (MyEvent event : events) {
-            if (event.getTime().getYear() == year - 1900 && event.getTime().getMonth() == month - 1) {
+            if (event.getDate().getYear() == year - 1900 && event.getDate().getMonth() == month - 1) {
                 eventsOnThisMonth.add(event);
             }
         }
@@ -121,7 +127,7 @@ public class EventServiceImp implements EventService {
     }
 
     public ArrayList<MyEvent> getFilteredByFavourite() {
-        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
+        return UserServiceImp.UserHolder.get().getUserFavoriteEvents();
     }
 
     protected ArrayList<MyEvent> getFilteredByMy() {
@@ -135,12 +141,12 @@ public class EventServiceImp implements EventService {
     ////////// ↓↓↓↓↓↓ //////////
 
     @Override
-    public ArrayList<MyEvent> getSortedBy(SortType sortType,ArrayList events) {
+    public ArrayList<MyEvent> getSortedBy(SortType sortType, ArrayList events) {
         switch (sortType) {
             case TimeClosestFirst:
                 return getSortedByTimeClosest(events);
             case TimeFurthestFirst:
-                return getSortedByTimeFurthest();
+                return getSortedByTimeFurthest(events);
             case DistClosestFirst:
                 return getSortedByDistClosest();
             case DistFarthestFirst:
@@ -160,7 +166,7 @@ public class EventServiceImp implements EventService {
             long timeOfEvent = 0;
             try {
                 timeOfEvent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
-                        .parse(format1.format(events.get(i).getTime())).getTime();
+                        .parse(format1.format(events.get(i).getDate())).getTime();
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -181,10 +187,10 @@ public class EventServiceImp implements EventService {
                 colorOfEvent = Color.BLUE;
                 break;
             case 2:
-                colorOfEvent = Color.rgb(32,165,35);
+                colorOfEvent = Color.rgb(32, 165, 35);
                 break;
             case 3:
-                colorOfEvent = Color.rgb(207,204,29);
+                colorOfEvent = Color.rgb(207, 204, 29);
                 break;
             case 4:
                 colorOfEvent = Color.RED;
@@ -212,33 +218,124 @@ public class EventServiceImp implements EventService {
         return type;
     }
 
-    public boolean hasDateAnEvents(int year,int month,int day){
+    public boolean hasDateAnEvents(int year, int month, int day) {
         return !getFilteredByDate(year, month, day).isEmpty();
     }
 
 
     public ArrayList<MyEvent> getSortedByTimeClosest(ArrayList<MyEvent> events) {
-        ArrayList<MyEvent> sortedEvents = new ArrayList<>();
-       /* long[] times = new long[events.size()];
-
-        for (int i = 0; i < times.length ; i++) {
-            times[i] = events.get(i).getTime().getTime();
-        }
-        Arrays.sort(times);
-        ArrayList<MyEvent> sortedEvents = new ArrayList<>();
-        for (int i = 0; i <times.length ; i++) {
-                if (events.get(i).getTime().getTime()==times[i]){
-                    sortedEvents.add(events.get(i));
+        events.sort(new Comparator<MyEvent>() {
+            @Override
+            public int compare(MyEvent o1, MyEvent o2) {
+                if (o1.getDate().getTime() > o2.getDate().getTime()) {
+                    return -1;
+                }
+                if (o1.getDate().getTime() < o2.getDate().getTime()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-        }
-
-        */
-        return sortedEvents;
+        });
+        return events;
     }
 
-    protected ArrayList<MyEvent> getSortedByTimeFurthest() {
+    public ArrayList<MyEvent> getUserFavoritesEvents(){
+        return new ArrayList<>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
+    }
+    public void addEventToData(MyEvent event){
+        daoFactory.getEventDao().insert(event,true);
+    }
+
+    @Override
+    public ArrayList<MyEvent> getUserCreatedEvents() {
         return null;
     }
+
+    public ArrayList<MyEvent> getSortedByTimeFurthest(ArrayList<MyEvent> events) {
+        events.sort(new Comparator<MyEvent>() {
+            @Override
+            public int compare(MyEvent o1, MyEvent o2) {
+                if (o1.getDate().getTime() > o2.getDate().getTime()) {
+                    return 1;
+                }
+                if (o1.getDate().getTime() < o2.getDate().getTime()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        return events;
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getEventsStatusString(MyEvent event){
+        ArrayList<MyEvent> events = new ArrayList<>();
+        events.add(event);
+        return getListOfEventsStatuses(events).get(0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<String> getListOfEventsStatuses(ArrayList<MyEvent> events) {
+        ArrayList<String> statuses = new ArrayList<>();
+        if(events.isEmpty()){
+            return statuses;
+        }
+        LocalDate date = java.time.LocalDate.now();
+        LocalTime time = java.time.LocalTime.now();
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+        int hours = time.getHour();
+        int minutes = time.getMinute();
+        for (MyEvent event : events) {
+            if (event.getDate().getYear() == year - 1900 && event.getDate().getMonth() == month - 1
+                    && event.getDate().getDate() == day) {
+                if(event.getDate().getHours() < hours) {
+                    statuses.add("Active");
+                }
+                if(event.getDate().getHours()==hours){
+                    if(event.getDate().getMinutes() <= minutes){
+                        statuses.add("Active");
+                    }
+                    else{
+                        statuses.add("UpComing");
+                    }
+                }
+                if(event.getDate().getHours() > hours){
+                    statuses.add("UpComing");
+                }
+            }
+            else{
+                if(event.getDate().getYear()>year-1900){
+                    statuses.add("UpComing");
+                }
+                if(event.getDate().getYear()==year-1900){
+                    if(event.getDate().getMonth() > month){
+                        statuses.add("UpComing");
+                    }
+                    if(event.getDate().getMonth()==month){
+                        if(event.getDate().getDate()>day){
+                            statuses.add("Upcoming");
+                        }
+                        if(event.getDate().getDate()<day){
+                            statuses.add("Finished");
+                        }
+                    }
+                    if(event.getDate().getMonth() < month){
+                        statuses.add("Finished");
+                    }
+                }
+                if(event.getDate().getYear() < year-1900){
+                    statuses.add("Finished");
+                }
+
+            }
+        }
+        return statuses;
+    }
+
 
     protected ArrayList<MyEvent> getSortedByDistClosest() {
         return null;
@@ -247,4 +344,19 @@ public class EventServiceImp implements EventService {
     protected ArrayList<MyEvent> getSortedByDistFarthest() {
         return null;
     }
+    public boolean isEventInFavorites(MyEvent event){
+        if(UserServiceImp.UserHolder.get().getUserFavoriteEvents() == null){
+            return false;
+        }
+        ArrayList<MyEvent> favorites = new ArrayList<>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
+        return favorites.contains(event);
+    }
+    public void addToFavorites(MyEvent event){
+        UserServiceImp.UserHolder.get().getUserFavoriteEvents().add(event);
+    }
+    public void removeFromFavorites(MyEvent event){
+        UserServiceImp.UserHolder.get().getUserFavoriteEvents().remove(event);
+    }
+
+
 }

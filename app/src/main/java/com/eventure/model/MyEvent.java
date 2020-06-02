@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class MyEvent implements Serializable {
 
@@ -14,22 +15,53 @@ public class MyEvent implements Serializable {
     private Date time;
     private LatLng place;
     private int type;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+    // 1 - Will be
+    // 0 - Right now
+    // -1 Ended
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public MyEvent(Integer eventId, String title, String description, int year, int month, int date,
                    int hour, int min, LatLng place, int type) {
         this.eventId = eventId;
         this.title = title;
         this.description = description;
-        setTime(year,month,date,hour,min);
+        setDate(year,month,date,hour,min);
         this.place = place;
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MyEvent)) return false;
+        MyEvent myEvent = (MyEvent) o;
+        return getType() == myEvent.getType() &&
+                getStatus() == myEvent.getStatus() &&
+                Objects.equals(getEventId(), myEvent.getEventId()) &&
+                Objects.equals(getTitle(), myEvent.getTitle()) &&
+                Objects.equals(getDescription(), myEvent.getDescription()) &&
+                Objects.equals(getDate(), myEvent.getDate()) &&
+                Objects.equals(getPlace(), myEvent.getPlace());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEventId(), getTitle(), getDescription(), getDate(), getPlace(), getType(), getStatus());
     }
 
     @Override
     public String toString() {
         return "Event{" +
                 "title='" + title + '\'' +
-                ", time=" + time +
+                ", time=" + date +
                 ", place='" + place + '\'' +
                 ", type='" + type + '\'' +
                 '}';
@@ -59,12 +91,12 @@ public class MyEvent implements Serializable {
         this.description = description;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTime(int year,int month,int date,int hours,int min) {
-        this.time = new Date(year,month,date,hours,min);
+    public void setDate(int year, int month, int date, int hours, int min) {
+        this.date = new Date(year,month,date,hours,min);
     }
 
     public LatLng getPlace() {
