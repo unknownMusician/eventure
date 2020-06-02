@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(ControllerFactory.get().getRegisterController().registerUser(mLogin,mPassword)){
                     toastMessage("You have successfully created an account");
                     Log.d(TAG, "onClick: " + ServiceFactory.get().getUserService().getAllUsers());
+                    ControllerFactory.get().getFrontController().goToActivity(RegisterActivity.this,MainActivity.class);
                 }
                 else{
                     toastMessage("Sorry the is trouble!");

@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/listEventTitleTextView"
-        android:layout_width="258dp"
-        android:layout_height="100dp"
+        android:layout_width="254dp"
+        android:layout_height="84dp"
         android:fontFamily="@font/abril_fatface"
         android:gravity="center"
         android:text="@string/list_of_events"
@@ -17,26 +17,26 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.006"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.006" />
+        app:layout_constraintVertical_bias="0.041" />
 
     <ListView
         android:id="@+id/listOfEventsList"
-        android:layout_width="342dp"
-        android:layout_height="560dp"
+        android:layout_width="0dp"
+        android:layout_height="587dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listEventTitleTextView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Spinner
         android:id="@+id/eventFilterSpinner"
-        android:layout_width="144dp"
-        android:layout_height="38dp"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
         android:layout_marginTop="4dp"
         android:gravity="center"
         android:textAlignment="center"
@@ -47,7 +47,7 @@
 
     <Spinner
         android:id="@+id/eventSorterSpinner"
-        android:layout_width="146dp"
+        android:layout_width="140dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
@@ -57,26 +57,25 @@
         app:layout_constraintStart_toEndOf="@+id/listEventTitleTextView"
         app:layout_constraintTop_toBottomOf="@+id/eventFilterSpinner" />
 
-    <ListView
-        android:id="@+id/listOfEventsStatusesList"
-        android:layout_width="72dp"
-        android:layout_height="560dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/listOfEventsList"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listEventTitleTextView"
-        app:layout_constraintVertical_bias="0.0" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addEventBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventSorterSpinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

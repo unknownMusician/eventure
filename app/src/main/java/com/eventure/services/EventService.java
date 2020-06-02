@@ -23,6 +23,7 @@ public interface EventService {
     ArrayList<MyEvent> getFilteredByThisWeek();
     ArrayList<MyEvent> getFilteredByThisMonth();
     ArrayList<MyEvent> getFilteredByFavourite();
+    ArrayList<MyEvent> getFilteredByMyEvents();
     ArrayList<MyEvent> getSortedByTimeFurthest(ArrayList<MyEvent> events);
     ArrayList<String> getListOfEventsStatuses(ArrayList<MyEvent> events);
     String getEventsStatusString(MyEvent event);
@@ -32,6 +33,10 @@ public interface EventService {
     boolean isEventInFavorites(MyEvent event);
     void removeFromFavorites(MyEvent event);
     void addEventToData(MyEvent event);
+    void addToMyEvents(MyEvent event);
+    ArrayList<MyEvent> getSortedByStatus(String status,ArrayList<MyEvent> events);
+    ArrayList<MyEvent> getSortedByType(String type,ArrayList<MyEvent> events);
+
 
 
     ArrayList<MyEvent> getFilteredByDate(int year,int month,int day);

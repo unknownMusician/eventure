@@ -93,9 +93,8 @@ public class ControllerFactory {
         return getEventController();
     }public EventListController getMy(EventListActivity self){
         return getEventListController();
-    }public LoginController getMy(LoginActivity self){
-        return getLoginController();
-    }public MenuController getMy(MenuActivity self){
+    }
+    public MenuController getMy(MenuActivity self){
         return getMenuController();
     }public FrontController getMy(MainActivity self){
         return getFrontController();

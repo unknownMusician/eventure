@@ -6,6 +6,6 @@
     android:fontFamily="@font/adamina"
     android:gravity="center"
     android:textAlignment="center"
-    android:textSize="28sp">
+    android:textSize="24sp">
 
 </TextView>

@@ -107,6 +107,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                         Intent intent = new Intent(CreateEventActivity.this,EventActivity.class);
                         MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
+                        ServiceFactory.get().getEventService().addToMyEvents(newEvent);
                         intent.putExtra(MyEvent.class.getSimpleName(),newEvent);
                         Toast.makeText(CreateEventActivity.this,"Your activity has been created!",Toast.LENGTH_SHORT).show();
                         startActivity(intent);

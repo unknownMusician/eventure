@@ -8,7 +8,12 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
+    <string name="about">
+     With app Eventure you can find a lot of new friends and meetings. You can find a lot of new Events,
+        which you didn\'t even think about. So enjoy!/////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////
+        Coded by Nikita Linovitskiy and Sergey Ovchinikov
+    </string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

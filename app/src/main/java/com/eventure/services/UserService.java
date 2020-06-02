@@ -15,4 +15,5 @@ public interface UserService {
 
     boolean exist(String name);
     ArrayList<User> getAllUsers();
+    boolean changePassword(String oldPassword,String newPassword);
 }
