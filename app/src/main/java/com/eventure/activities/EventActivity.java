@@ -63,7 +63,7 @@ public class EventActivity extends AppCompatActivity {
                 }
                 else{
                     ServiceFactory.get().getEventService().removeFromFavorites(event);
-                    Toast.makeText(EventActivity.this,"Event has been removed fromzz your favorites",Toast.LENGTH_SHORT);
+                    Toast.makeText(EventActivity.this,"Event has been removed from your favorites",Toast.LENGTH_SHORT);
                 }
 
             }
