@@ -8,33 +8,48 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.eventure.R;
+import com.eventure.controller.ControllerFactory;
+import com.eventure.controller.MapsController;
+import com.eventure.model.MyEvent;
+import com.eventure.services.UserServiceImp;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
 
 import static com.eventure.util.Constants.ERROR_DIALOG_REQUEST;
 import static com.eventure.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.eventure.util.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
 
@@ -60,19 +77,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        // LatLng sydney = new LatLng(-34, 151);
-        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // GPS
         if(ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mMap.setMyLocationEnabled(true);
+
+        addMarkers();
+        // ToDo
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(new LatLng(44.2, 21.7), new LatLng(52.6, 40.6)), 50));
     }
 
-    ////////// ↑ ↑ ↑ ↑ ↑ ↑  //////////
-    ////////// Map creating //////////
+    private void addMarkers(){
+        // Add a marker in Sydney and move the camera
+        LatLng userLatLng = ControllerFactory.get().getMapsController().getMyLocation();
+
+        // ToDo
+        MapsController controller = ControllerFactory.get().getMapsController();
+
+        ArrayList<MyEvent> events = ControllerFactory.get().getMapsController().getAllEvents();
+        for (MyEvent event : events){
+            LatLng eventLatLng = event.getPlace();
+
+            Marker marker = mMap.addMarker(new MarkerOptions().position(eventLatLng).title(event.getTitle()).icon(bitmapDescriptorFromVector(controller.getIconByType(event))));
+            marker.setTag(event);
+        }
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        MyEvent event = (MyEvent) marker.getTag();
+
+        if(event == null){
+            return false;
+        }
+
+        ////////////////////////
+
+        return false;
+    }
+
+        //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
+    //////////  Map creating //////////
+    //-------------------------------//
+    ////////// Icon creating //////////
+    //////////  ↓ ↓ ↓ ↓ ↓ ↓  //////////
+
+    private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(getApplicationContext(), vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
+    ////////// Icon creating //////////
+    //-------------------------------//
 
     @Override
     protected void onResume() {
@@ -80,18 +144,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(checkMapServices()){
             if(mLocationPermissionGranted){
                 getEvents();
+                getLastKnownLocation();
             }else{
                 getLocationPermission();
             }
         }
     }
 
-    private void getEvents(){
+    private void getEvents() {
 
     }
 
-    ////////// Services & GPS //////////
-    ////////// ↓ ↓ ↓ ↓ ↓ ↓ ↓  //////////
+    //////////     GPS-receiving      //////////
+    //////////      ↓ ↓ ↓ ↓ ↓ ↓       //////////
+
+    private void getLastKnownLocation(){
+        Log.d(TAG, "getLastKnownLocation: called.");
+
+        if(ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if(task.isSuccessful()){
+                    Location location = task.getResult();
+                    LatLng geoPoint = new LatLng(location.getLatitude(), location.getLongitude());
+                    UserServiceImp.UserHolder.setLocation(geoPoint);
+                    Log.d(TAG, "onComplete: latitude: " + geoPoint.latitude);
+                    Log.d(TAG, "onComplete: longitude: " + geoPoint.longitude);
+                }
+            }
+        });
+    }
+
+    //////////      ↑ ↑ ↑ ↑ ↑ ↑       //////////
+    //////////     GPS-receiving      //////////
+    //----------------------------------------//
+    ////////// Services & GPS-showing //////////
+    ////////// ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓  //////////
+
     boolean mLocationPermissionGranted = false;
 
     private boolean checkMapServices() {
@@ -142,6 +235,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
             getEvents();
+            getLastKnownLocation();
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -196,6 +290,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if (mLocationPermissionGranted) {
                     getEvents();
+                    getLastKnownLocation();
                 } else {
                     getLocationPermission();
                 }

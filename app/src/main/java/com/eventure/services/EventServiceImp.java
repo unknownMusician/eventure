@@ -2,7 +2,6 @@ package com.eventure.services;
 
 import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -11,14 +10,10 @@ import com.eventure.model.MyEvent;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 public class EventServiceImp implements EventService {
@@ -126,11 +121,11 @@ public class EventServiceImp implements EventService {
     }
 
     public ArrayList<MyEvent> getFilteredByFavourite() {
-        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
+        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
     }
 
     protected ArrayList<MyEvent> getFilteredByMy() {
-        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.get().getUserEvents());
+        return new ArrayList<MyEvent>(UserServiceImp.UserHolder.getUser().getUserEvents());
     }
 
     ////////// ↑↑↑↑↑↑ //////////

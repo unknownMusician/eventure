@@ -2,6 +2,7 @@ package com.eventure.inmemory;
 
 import com.eventure.model.MyEvent;
 import com.eventure.model.User;
+import com.google.android.gms.maps.model.LatLng;
 
 public class InMemoryTestData {
 
@@ -17,19 +18,19 @@ public class InMemoryTestData {
 
         MyEvent event = new MyEvent(0,"First Event",
                 "Nothing there",120,0,14,12,30,
-                "First Event",1);
+                new LatLng(50.5d, 30.5d),1);
         MyEvent event1 = new MyEvent(1,"Event",
                 "Nothing there",120,0,12,12,30,
-                "Event ",2);
+                new LatLng(50.7d, 30.2d),2);
         MyEvent event3 = new MyEvent(2,"Third Event",
                 "Nothing there",120,0,11,12,30,
-                "Third Event",4);
+                new LatLng(50.6d, 30.1d),4);
         MyEvent event2 = new MyEvent(3,"KPI",
                 "Nothing there",120,0,17,12,30,
-                "KPI",3);
+                new LatLng(50.2d, 30.4d),3);
         MyEvent borispol = new MyEvent(4,"Borispol HYPE",
                 "TU-TU-TUTUTUTUTUTU",120,5,2,12,30,
-                "KPI",3);
+                new LatLng(51.1d, 30.5d),3);
 
         database.users.put(sabrina.getUserId(),sabrina);
         database.users.put(jake.getUserId(),jake);

@@ -1,6 +1,8 @@
 package com.eventure.model;
 
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,11 +12,11 @@ public class MyEvent implements Serializable {
     private String title;
     private String description;
     private Date time;
-    private String place;
+    private LatLng place;
     private int type;
 
     public MyEvent(Integer eventId, String title, String description, int year, int month, int date,
-                   int hour, int min, String place, int type) {
+                   int hour, int min, LatLng place, int type) {
         this.eventId = eventId;
         this.title = title;
         this.description = description;
@@ -65,11 +67,11 @@ public class MyEvent implements Serializable {
         this.time = new Date(year,month,date,hours,min);
     }
 
-    public String getPlace() {
+    public LatLng getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
+    public void setPlace(LatLng place) {
         this.place = place;
     }
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "907563154604",
+    "firebase_url": "https://eventure-279013.firebaseio.com",
+    "project_id": "eventure-279013",
+    "storage_bucket": "eventure-279013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907563154604:android:fb0c822ba76ac786797309",
+        "android_client_info": {
+          "package_name": "com.eventure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907563154604-egvjg2uidqo14gue5h6tik69pf8nb3i8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU4jyI1daSQk-9cKTGdYP0pb5ZtpiI000"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907563154604-egvjg2uidqo14gue5h6tik69pf8nb3i8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

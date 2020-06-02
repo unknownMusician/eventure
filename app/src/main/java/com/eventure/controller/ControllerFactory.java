@@ -33,6 +33,7 @@ public class ControllerFactory {
     private EventController eventController;
     private CalendarController calendarController;
     private RegisterController registerController;
+    private MapsController mapsController;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected ControllerFactory() {
@@ -47,6 +48,7 @@ public class ControllerFactory {
         eventController = new EventController();
         calendarController = new CalendarController();
         registerController = new RegisterController();
+        mapsController = new MapsController();
     }
 
     public FrontController getFrontController() {
@@ -81,6 +83,10 @@ public class ControllerFactory {
         return registerController;
     }
 
+    public MapsController getMapsController() {
+        return mapsController;
+    }
+
     ////////// SOME FUNCS FOR NIKITA //////////
 
     public EventController getMy(EventActivity self){
@@ -95,7 +101,9 @@ public class ControllerFactory {
         return getFrontController();
     }public RegisterController getMy(RegisterActivity self){
         return getRegisterController();
-    }/*public CalendarController getMy(CalendarActivity self){
+    }public CalendarController getMy(CalendarActivity self){
         return getCalendarController();
-    }*/
+    }public MapsController getMy(MapsActivity self){
+        return getMapsController();
+    }
 }

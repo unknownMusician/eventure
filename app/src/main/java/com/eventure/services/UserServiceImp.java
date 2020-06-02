@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.eventure.dao.DaoFactory;
 import com.eventure.model.User;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
@@ -29,7 +30,7 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean checkPassword(User user, String password) {
         if (user.getPassword().equals(passwordHasher.apply(password))){
-            UserHolder.set(user);
+            UserHolder.setUser(user);
             return true;
         }
         return false;
@@ -52,13 +53,25 @@ public class UserServiceImp implements UserService {
 
     public static class UserHolder {
         private static User user;
+        private static LatLng location;
 
-        public static User get(){
+        public static User getUser(){
             return user;
         }
 
-        public static void set(User user){
+        public static void setUser(User user){
             UserHolder.user = user;
+        }
+
+        public static LatLng getLocation() {
+            if(location == null){
+                return new LatLng(50, 30);
+            }
+            return location;
+        }
+
+        public static void setLocation(LatLng location) {
+            UserHolder.location = location;
         }
     }
 }
