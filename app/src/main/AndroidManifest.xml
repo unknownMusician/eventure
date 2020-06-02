@@ -49,6 +49,7 @@
         <activity android:name=".activities.MenuActivity" />
         <activity android:name=".activities.EventListActivity" />
         <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.CreateEventActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

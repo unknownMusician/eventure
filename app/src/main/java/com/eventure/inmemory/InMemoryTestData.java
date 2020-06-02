@@ -28,7 +28,7 @@ public class InMemoryTestData {
                 "Nothing there",120,0,17,12,30,
                 "KPI",3);
         MyEvent borispol = new MyEvent(4,"Borispol HYPE",
-                "TU-TU-TUTUTUTUTUTU",120,5,2,12,30,
+                "TU-TU-TUTUTUTUTUTU",120,5,2,13,20,
                 "KPI",3);
 
         database.users.put(sabrina.getUserId(),sabrina);
