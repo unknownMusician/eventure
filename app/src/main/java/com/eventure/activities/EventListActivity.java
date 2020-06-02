@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -38,6 +39,7 @@ public class EventListActivity extends AppCompatActivity {
     String dayStr;
     ListAdapter adapter;
     ListView list;
+    TextView title;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -46,9 +48,11 @@ public class EventListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_list);
         list = findViewById(R.id.listOfEventsList);
 
+        title = findViewById(R.id.listEventTitleTextView);
         yearStr = getIntent().getStringExtra("year");
         monthStr = getIntent().getStringExtra("month");
         dayStr = getIntent().getStringExtra("day");
+
         Spinner spinnerFilter = findViewById(R.id.eventFilterSpinner);
         Spinner spinnerSorter = findViewById(R.id.eventSorterSpinner);
         Log.d(TAG, "onCreate: " + spinnerFilter.getId());
@@ -68,19 +72,24 @@ public class EventListActivity extends AppCompatActivity {
                         Integer month = Integer.parseInt(monthStr);
                         Integer day = Integer.parseInt(dayStr);
                         events = ServiceFactory.get().getEventService().getFilteredByDate(year,month,day);
+                        title.setText("Events on " + day +"/" + month + "/"+year );
                     }
                     else{
                         events = ServiceFactory.get().getEventService().getEventList();
+                        title.setText("All events");
                     }
                 }
                 if(position == 1) {
                     events = ServiceFactory.get().getEventService().getFilteredByToday();
+                       title.setText("Today events" );
                 }
                 if(position == 2) {
                     events = ServiceFactory.get().getEventService().getFilteredByThisWeek();
+                    title.setText("On week events" );
                 }
                 if(position == 3) {
                     events = ServiceFactory.get().getEventService().getFilteredByThisMonth();
+                    title.setText("On month events" );
                 }
                 titles = ServiceFactory.get().getEventService().getEventTitleList(events);
                 list = findViewById(R.id.listOfEventsList);
