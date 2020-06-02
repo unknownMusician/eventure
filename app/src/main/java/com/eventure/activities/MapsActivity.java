@@ -23,6 +23,7 @@ import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.MapsController;
 import com.eventure.model.MyEvent;
+import com.eventure.model.Place;
 import com.eventure.services.UserServiceImp;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -78,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // GPS
-        if(ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -89,19 +90,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(new LatLng(44.2, 21.7), new LatLng(52.6, 40.6)), 50));
     }
 
-    private void addMarkers(){
+    private void addMarkers() {
         // Add a marker in Sydney and move the camera
-        LatLng userLatLng = ControllerFactory.get().getMapsController().getMyLocation();
-
-        // ToDo
+        Place place = ControllerFactory.get().getMapsController().getMyLocation();
+        LatLng userLatLng = new LatLng(place.getLatitude(), place.getLongitude());
+                // ToDo
         MapsController controller = ControllerFactory.get().getMapsController();
 
         ArrayList<MyEvent> events = ControllerFactory.get().getMapsController().getAllEvents();
-        for (MyEvent event : events){
-            LatLng eventLatLng = event.getPlace();
-
-            Marker marker = mMap.addMarker(new MarkerOptions().position(eventLatLng).title(event.getTitle()).icon(bitmapDescriptorFromVector(controller.getIconByType(event))));
-            marker.setTag(event);
+        for (int i = 0; i < events.size(); i++) {
+            Place eventPlace = events.get(i).getPlace();
+            LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
+            Marker marker = mMap.addMarker(new MarkerOptions().position(eventLatLng).title(events.get(i).getTitle()).icon(bitmapDescriptorFromVector(controller.getIconByType(events.get(i)))));
+            marker.setTag(events.get(i));
         }
         mMap.setOnMarkerClickListener(this);
     }
@@ -110,16 +111,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(final Marker marker) {
         MyEvent event = (MyEvent) marker.getTag();
 
-        if(event == null){
+        if (event == null) {
             return false;
         }
 
-        ////////////////////////
+        Intent intent = new Intent(MapsActivity.this, EventActivity.class);
+        intent.putExtra(MyEvent.class.getName(), event);
+        startActivity(intent);
 
-        return false;
+        return true;
     }
 
-        //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
+    //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
     //////////  Map creating //////////
     //-------------------------------//
     ////////// Icon creating //////////
@@ -141,11 +144,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 getEvents();
                 getLastKnownLocation();
-            }else{
+            } else {
                 getLocationPermission();
             }
         }
@@ -158,20 +161,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //////////     GPS-receiving      //////////
     //////////      ↓ ↓ ↓ ↓ ↓ ↓       //////////
 
-    private void getLastKnownLocation(){
+    private void getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation: called.");
 
-        if(ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Location location = task.getResult();
                     LatLng geoPoint = new LatLng(location.getLatitude(), location.getLongitude());
-                    UserServiceImp.UserHolder.setLocation(geoPoint);
+                    //ToDo
+                    Place place = new Place(geoPoint.latitude, geoPoint.longitude);
+                    UserServiceImp.UserHolder.setLocation(place);
+                    //
                     Log.d(TAG, "onComplete: latitude: " + geoPoint.latitude);
                     Log.d(TAG, "onComplete: longitude: " + geoPoint.longitude);
                 }

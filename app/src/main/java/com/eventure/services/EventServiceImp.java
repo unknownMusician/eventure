@@ -127,7 +127,7 @@ public class EventServiceImp implements EventService {
     }
 
     public ArrayList<MyEvent> getFilteredByFavourite() {
-        return UserServiceImp.UserHolder.get().getUserFavoriteEvents();
+        return UserServiceImp.UserHolder.getUser().getUserFavoriteEvents();
     }
 
     protected ArrayList<MyEvent> getFilteredByMy() {
@@ -241,7 +241,7 @@ public class EventServiceImp implements EventService {
     }
 
     public ArrayList<MyEvent> getUserFavoritesEvents(){
-        return new ArrayList<>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
+        return new ArrayList<>(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
     }
     public void addEventToData(MyEvent event){
         daoFactory.getEventDao().insert(event,true);
@@ -345,17 +345,17 @@ public class EventServiceImp implements EventService {
         return null;
     }
     public boolean isEventInFavorites(MyEvent event){
-        if(UserServiceImp.UserHolder.get().getUserFavoriteEvents() == null){
+        if(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents() == null){
             return false;
         }
-        ArrayList<MyEvent> favorites = new ArrayList<>(UserServiceImp.UserHolder.get().getUserFavoriteEvents());
+        ArrayList<MyEvent> favorites = new ArrayList<>(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
         return favorites.contains(event);
     }
     public void addToFavorites(MyEvent event){
-        UserServiceImp.UserHolder.get().getUserFavoriteEvents().add(event);
+        UserServiceImp.UserHolder.getUser().getUserFavoriteEvents().add(event);
     }
     public void removeFromFavorites(MyEvent event){
-        UserServiceImp.UserHolder.get().getUserFavoriteEvents().remove(event);
+        UserServiceImp.UserHolder.getUser().getUserFavoriteEvents().remove(event);
     }
 
 

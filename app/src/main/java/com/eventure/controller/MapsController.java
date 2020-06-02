@@ -2,15 +2,15 @@ package com.eventure.controller;
 
 import com.eventure.R;
 import com.eventure.model.MyEvent;
+import com.eventure.model.Place;
 import com.eventure.services.ServiceFactory;
 import com.eventure.services.UserServiceImp;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
 public class MapsController extends FrontController {
 
-    public LatLng getMyLocation(){
+    public Place getMyLocation(){
         return UserServiceImp.UserHolder.getLocation();
     }
 

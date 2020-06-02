@@ -5,8 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.eventure.dao.DaoFactory;
+import com.eventure.model.Place;
 import com.eventure.model.User;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
@@ -53,7 +53,7 @@ public class UserServiceImp implements UserService {
 
     public static class UserHolder {
         private static User user;
-        private static LatLng location;
+        private static Place location;
 
         public static User getUser(){
             return user;
@@ -63,14 +63,14 @@ public class UserServiceImp implements UserService {
             UserHolder.user = user;
         }
 
-        public static LatLng getLocation() {
+        public static Place getLocation() {
             if(location == null){
-                return new LatLng(50, 30);
+                return new Place(50, 30);
             }
             return location;
         }
 
-        public static void setLocation(LatLng location) {
+        public static void setLocation(Place location) {
             UserHolder.location = location;
         }
     }

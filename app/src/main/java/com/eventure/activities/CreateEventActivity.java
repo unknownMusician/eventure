@@ -3,6 +3,7 @@ package com.eventure.activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.fragment.app.DialogFragment;
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
 import com.eventure.model.MyEvent;
+import com.eventure.model.Place;
 import com.eventure.services.ServiceFactory;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
@@ -33,7 +35,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private static final String TAG = "Create Activity" ;
     Integer type,year,month,day,hour,min;
-    String title,description,place;
+    String title,description;
+    Place place;
 
 
     @Override
@@ -52,7 +55,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         EditText placeEditText = findViewById(R.id.setPlaceEditText);
         title = titleEditText.getText().toString();
         description = descriptionEditText.getText().toString();
-        place = placeEditText.getText().toString();
+        //ToDo
+        //placeStr = placeEditText.getText().toString();
+        place = new Place(14, 14);
+        //
+
         Button createEventBtn = findViewById(R.id.createEventBtn);
 
         setDateBtn.setOnClickListener(new View.OnClickListener() {

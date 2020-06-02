@@ -66,6 +66,6 @@ public class EventActivity extends AppCompatActivity {
 
             }
         });
-        Log.d(TAG, "onCreate: " + UserServiceImp.UserHolder.get().getUserFavoriteEvents());
+        Log.d(TAG, "onCreate: " + UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
     }
 }
