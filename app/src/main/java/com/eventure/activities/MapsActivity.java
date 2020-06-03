@@ -101,7 +101,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < events.size(); i++) {
             Place eventPlace = events.get(i).getPlace();
             LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
-            Marker marker = mMap.addMarker(new MarkerOptions().position(eventLatLng).title(events.get(i).getTitle()).icon(bitmapDescriptorFromVector(controller.getIconByType(events.get(i)))));
+            Marker marker = mMap
+                    .addMarker(new MarkerOptions()
+                            .position(eventLatLng)
+                            .title(events
+                                    .get(i)
+                                    .getTitle())
+                            .icon(
+                                    ControllerFactory.get().getMapsController()
+                                            .bitmapDescriptorFromVector(getApplicationContext(), controller.getIconByType(events.get(i)))));
             marker.setTag(events.get(i));
         }
         mMap.setOnMarkerClickListener(this);
@@ -128,14 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ////////// Icon creating //////////
     //////////  ↓ ↓ ↓ ↓ ↓ ↓  //////////
 
-    private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(getApplicationContext(), vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
+
 
     //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
     ////////// Icon creating //////////
