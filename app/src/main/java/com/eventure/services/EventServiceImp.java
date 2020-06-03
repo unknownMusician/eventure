@@ -2,6 +2,7 @@ package com.eventure.services;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -327,13 +328,13 @@ public class EventServiceImp implements EventService {
         }
         LocalDate date = java.time.LocalDate.now();
         LocalTime time = java.time.LocalTime.now();
-        int year = date.getYear();
-        int month = date.getMonthValue();
+        int year = date.getYear() - 1900;
+        int month = date.getMonthValue() - 1;
         int day = date.getDayOfMonth();
         int hours = time.getHour();
         int minutes = time.getMinute();
         for (MyEvent event : events) {
-            if (event.getDate().getYear() == year - 1900 && event.getDate().getMonth() == month - 1
+            if (event.getDate().getYear() == year && event.getDate().getMonth() == month
                     && event.getDate().getDate() == day) {
                 if(event.getDate().getHours() < hours) {
                     statuses.add("Active");
@@ -351,10 +352,11 @@ public class EventServiceImp implements EventService {
                 }
             }
             else{
-                if(event.getDate().getYear()>year-1900){
+                Log.d(TAG, "getListOfEventsStatuses: " + event.getDate().getYear() + " " + event.getDate().getMonth() + "\n" + year + " " +month);
+                if(event.getDate().getYear()>year){
                     statuses.add("UpComing");
                 }
-                if(event.getDate().getYear()==year-1900){
+                if(event.getDate().getYear()==year){
                     if(event.getDate().getMonth() > month){
                         statuses.add("UpComing");
                     }
@@ -365,12 +367,16 @@ public class EventServiceImp implements EventService {
                         if(event.getDate().getDate()<day){
                             statuses.add("Finished");
                         }
+
+
                     }
+
+
                     if(event.getDate().getMonth() < month){
                         statuses.add("Finished");
                     }
                 }
-                if(event.getDate().getYear() < year-1900){
+                if(event.getDate().getYear() < year){
                     statuses.add("Finished");
                 }
 
