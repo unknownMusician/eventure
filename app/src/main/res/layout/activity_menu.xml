@@ -8,8 +8,8 @@
 
     <ListView
         android:id="@+id/listMenu"
-        android:layout_width="0dp"
-        android:layout_height="664dp"
+        android:layout_width="411dp"
+        android:layout_height="684dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,8 +20,8 @@
 
     <TextView
         android:id="@+id/titleMenu"
-        android:layout_width="261dp"
-        android:layout_height="78dp"
+        android:layout_width="266dp"
+        android:layout_height="88dp"
         android:fontFamily="@font/abril_fatface"
         android:gravity="center"
         android:text="Menu"
@@ -31,5 +31,5 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintVertical_bias="0.56" />
 </androidx.constraintlayout.widget.ConstraintLayout>
