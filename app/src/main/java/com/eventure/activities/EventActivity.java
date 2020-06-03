@@ -40,6 +40,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -52,6 +53,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import static com.eventure.util.Constants.ERROR_DIALOG_REQUEST;
+import static com.eventure.util.Constants.MAPVIEW_BUNDLE_KEY;
 import static com.eventure.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.eventure.util.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
@@ -64,16 +66,15 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     private boolean tempCheckBox;
     boolean currentState;
     MyEvent event;
-    private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationClient;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onMapCreate();
         setContentView(R.layout.activity_event);
 
+        onMapCreate(savedInstanceState);
+        
         event = (MyEvent) getIntent().getSerializableExtra(MyEvent.class.getSimpleName());
         Log.d(TAG, "onCreate: " + getIntent().getSerializableExtra(MyEvent.class.getSimpleName()).hashCode());
 
@@ -113,225 +114,116 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
-    //////////  Map creating //////////
-    //////////  ↓ ↓ ↓ ↓ ↓ ↓  //////////
+    ////////// Maps //////////
+    //////////  ↓ ↓ //////////
 
-    private void onMapCreate(){
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    private MapView mMapView;
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // GPS
-        if (ActivityCompat.checkSelfPermission(EventActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(EventActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+    private void onMapCreate(Bundle savedInstanceState){
+        Bundle mapViewBundle = null;
+        if(savedInstanceState != null){
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-        mMap.setMyLocationEnabled(true);
+        mMapView = (MapView) findViewById(R.id.map);
+        mMapView.onCreate(mapViewBundle);
 
-        addMarker();
-        // ToDo
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(new LatLng(44.2, 21.7), new LatLng(52.6, 40.6)), 50));
+        mMapView.getMapAsync(this);
     }
-
-    private void addMarker() {
-        // ToDo
-        MapsController controller = ControllerFactory.get().getMapsController();
-            Place eventPlace = event.getPlace();
-            LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
-            Marker marker = mMap.addMarker(new MarkerOptions().position(eventLatLng).title(event.getTitle()).icon(bitmapDescriptorFromVector(controller.getIconByType(event))));
-            marker.setTag(event);
-    }
-
-    //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
-    //////////  Map creating //////////
-    //-------------------------------//
-    ////////// Icon creating //////////
-    //////////  ↓ ↓ ↓ ↓ ↓ ↓  //////////
-
-    private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(getApplicationContext(), vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    //////////  ↑ ↑ ↑ ↑ ↑ ↑  //////////
-    ////////// Icon creating //////////
-    //-------------------------------//
 
     @Override
-    protected void onResume() {
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if(mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+
+        mMapView.onSaveInstanceState(mapViewBundle);
+    }
+
+    @Override
+    protected void onResume(){
         super.onResume();
-        if (checkMapServices()) {
-            if (mLocationPermissionGranted) {
-                showTheWay();
-                getLastKnownLocation();
-            } else {
-                getLocationPermission();
-            }
-        }
+        mMapView.onResume();
     }
 
-    private void showTheWay() {
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMapView.onStart();
     }
 
-    //////////     GPS-receiving      //////////
-    //////////      ↓ ↓ ↓ ↓ ↓ ↓       //////////
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMapView.onStop();
+    }
 
-    private void getLastKnownLocation() {
-        Log.d(TAG, "getLastKnownLocation: called.");
+    @Override
+    public void onMapReady(GoogleMap map) {
+        MapsController controller = ControllerFactory.get().getMapsController();
+        // adding Markers
+        Place eventPlace = event.getPlace();
+        LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
 
+        addMarker(map, eventLatLng, controller);
+        showUserLocation(map);
+        moveCamera(map);
+    }
+
+    private void addMarker(GoogleMap map, LatLng eventLatLng, MapsController controller){
+        Marker marker = map
+                .addMarker(new MarkerOptions()
+                        .position(eventLatLng)
+                        .title(event
+                                .getTitle())
+                        .icon(
+                                controller
+                                        .bitmapDescriptorFromVector(getApplicationContext(), controller.getIconByType(event))));
+    }
+
+    private void showUserLocation(GoogleMap map) {
         if (ActivityCompat.checkSelfPermission(EventActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(EventActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                if (task.isSuccessful()) {
-                    Location location = task.getResult();
-                    LatLng geoPoint = new LatLng(location.getLatitude(), location.getLongitude());
-                    //ToDo
-                    Place place = new Place(geoPoint.latitude, geoPoint.longitude);
-                    UserServiceImp.UserHolder.setLocation(place);
-                    //
-                    Log.d(TAG, "onComplete: latitude: " + geoPoint.latitude);
-                    Log.d(TAG, "onComplete: longitude: " + geoPoint.longitude);
-                }
-            }
-        });
+        map.setMyLocationEnabled(true);
     }
 
-    //////////      ↑ ↑ ↑ ↑ ↑ ↑       //////////
-    //////////     GPS-receiving      //////////
-    //----------------------------------------//
-    ////////// Services & GPS-showing //////////
-    ////////// ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓  //////////
-
-    boolean mLocationPermissionGranted = false;
-
-    private boolean checkMapServices() {
-        if (isServicesOK()) {
-            if (isMapsEnabled()) {
-                return true;
-            }
-        }
-        return false;
+    private void moveCamera(GoogleMap map) {
+        Place eventPlace = event.getPlace();
+        Place userPlace = UserServiceImp.UserHolder.getLocation();
+        Place straightDistance = new Place(
+                Math.abs(eventPlace.getLatitude() - userPlace.getLatitude()),
+                Math.abs(eventPlace.getLongitude() - userPlace.getLongitude()));
+        LatLng leftBottom = new LatLng(
+                Math.min(eventPlace.getLatitude(), userPlace.getLatitude()) - 0.1d * straightDistance.getLatitude(),
+                Math.min(eventPlace.getLongitude(), userPlace.getLongitude()) - 0.1d * straightDistance.getLongitude());
+        Log.d(TAG, "Boundaries: leftBottom: " + leftBottom);
+        LatLng rightTop = new LatLng(
+                Math.max(eventPlace.getLatitude(), userPlace.getLatitude()) + 0.1d * straightDistance.getLatitude(),
+                Math.max(eventPlace.getLongitude(), userPlace.getLongitude()) + 0.1d * straightDistance.getLongitude());
+        Log.d(TAG, "Boundaries: rightTop: " + rightTop);
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(leftBottom, rightTop), 1));
     }
 
-    // somewhere ok
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        Intent enableGpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS);
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    // ok
-    public boolean isMapsEnabled() {
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        assert manager != null;
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            buildAlertMessageNoGps();
-            return false;
-        }
-        return true;
-    }
-
-    //somewhere ok
-    private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-            showTheWay();
-            getLastKnownLocation();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    // ok
-    public boolean isServicesOK() {
-        Log.d(TAG, "isServicesOK: checking google services version");
-
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(EventActivity.this);
-
-        if (available == ConnectionResult.SUCCESS) {
-            //everything is fine and the user can make map requests
-            Log.d(TAG, "isServicesOK: Google Play Services is working");
-            return true;
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
-            //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(EventActivity.this, available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        } else {
-            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
-        }
-        return false;
-    }
-
-    //somewhere ok
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
     }
 
-    // somewhere ok
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult: called.");
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if (mLocationPermissionGranted) {
-                    showTheWay();
-                    getLastKnownLocation();
-                } else {
-                    getLocationPermission();
-                }
-            }
-        }
-
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
     }
-    //////////  //////////
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
 }
