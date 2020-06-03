@@ -30,6 +30,7 @@ import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.MapsController;
 import com.eventure.model.MyEvent;
+import com.eventure.model.User;
 import com.eventure.model.Place;
 import com.eventure.services.ServiceFactory;
 import com.eventure.services.UserServiceImp;
@@ -63,8 +64,8 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String CHECK_BOX = "checkBox";
     private boolean tempCheckBox;
-    MyEvent event;
     boolean currentState;
+    MyEvent event;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -73,8 +74,9 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_event);
 
         onMapCreate(savedInstanceState);
-
-        event = (MyEvent) getIntent().getSerializableExtra(MyEvent.class.getName());
+        
+        event = (MyEvent) getIntent().getSerializableExtra(MyEvent.class.getSimpleName());
+        Log.d(TAG, "onCreate: " + getIntent().getSerializableExtra(MyEvent.class.getSimpleName()).hashCode());
 
         TextView title = findViewById(R.id.eventTitleTextView);
         TextView description = findViewById(R.id.eventDescriptionTextView);
@@ -89,26 +91,27 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         title.setText(event.getTitle());
         description.setText(event.getDescription());
         time.setText(event.getDate().toString());
+
+        currentState = UserServiceImp.UserHolder.getUser().getUserFavoriteEvents().contains(event);
         favoritesCheckBox = findViewById(R.id.eventFavoritsCheckBox);
-        if(ServiceFactory.get().getEventService().isEventInFavorites(event)){
+        if(currentState){
             favoritesCheckBox.setChecked(true);
         }
-        currentState = ServiceFactory.get().getEventService().isEventInFavorites(event);
         favoritesCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(currentState == false){
                     ServiceFactory.get().getEventService().addToFavorites(event);
-                    Toast.makeText(EventActivity.this,"Event has been added to your favorites",Toast.LENGTH_SHORT);
+                    Toast.makeText(EventActivity.this,"Event has been added to your favorites",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     ServiceFactory.get().getEventService().removeFromFavorites(event);
-                    Toast.makeText(EventActivity.this,"Event has been removed from your favorites",Toast.LENGTH_SHORT);
+                    Toast.makeText(EventActivity.this,"Event has been removed from your favorites",Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
-        Log.d(TAG, "onCreate: " + UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
+
     }
 
     ////////// Maps //////////

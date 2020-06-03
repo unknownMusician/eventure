@@ -37,10 +37,16 @@ public class EventServiceImp implements EventService {
         return events;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public ArrayList<String> getEventTitleList(ArrayList<MyEvent> events) {
-        return events.stream().map(MyEvent::getTitle).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> titles = new ArrayList<>();
+        String title = "";
+        for (MyEvent event:events) {
+            title = event.getTitle() + "    ("+getEventsStatusString(event)+")";
+            titles.add(title);
+        }
+        return titles;
     }
 
     @Override
@@ -128,6 +134,11 @@ public class EventServiceImp implements EventService {
 
     public ArrayList<MyEvent> getFilteredByFavourite() {
         return UserServiceImp.UserHolder.getUser().getUserFavoriteEvents();
+    }
+
+    @Override
+    public ArrayList<MyEvent> getFilteredByMyEvents() {
+        return UserServiceImp.UserHolder.getUser().getUserEvents();
     }
 
     protected ArrayList<MyEvent> getFilteredByMy() {
@@ -248,6 +259,38 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
+    public void addToMyEvents(MyEvent event) {
+        UserServiceImp.UserHolder.getUser().getUserEvents().add(event);
+    }
+
+    @Override
+    public ArrayList<MyEvent> getSortedByStatus(String status,ArrayList<MyEvent> events) {
+        ArrayList<MyEvent> eventsSortedByStatus = new ArrayList<>();
+        for (MyEvent event:events) {
+            if(ServiceFactory.get().getEventService().getEventsStatusString(event).equals(status)){
+                eventsSortedByStatus.add(event);
+            }
+        }
+        return eventsSortedByStatus;
+    }
+
+    @Override
+    public ArrayList<MyEvent> getSortedByType(String type, ArrayList<MyEvent> events) {
+        if(type.equals("Any Type")){
+            return events;
+        }
+        ArrayList<MyEvent> sortedEvents = new ArrayList<>();
+
+        for (MyEvent event:events) {
+            if(ServiceFactory.get().getEventService().getEventStringType(event).equals(type)){
+                sortedEvents.add(event);
+            }
+        }
+        return sortedEvents;
+
+    }
+
+    @Override
     public ArrayList<MyEvent> getUserCreatedEvents() {
         return null;
     }
@@ -348,7 +391,7 @@ public class EventServiceImp implements EventService {
         if(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents() == null){
             return false;
         }
-        ArrayList<MyEvent> favorites = new ArrayList<>(UserServiceImp.UserHolder.getUser().getUserFavoriteEvents());
+        ArrayList<MyEvent> favorites = UserServiceImp.UserHolder.getUser().getUserFavoriteEvents();
         return favorites.contains(event);
     }
     public void addToFavorites(MyEvent event){

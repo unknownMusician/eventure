@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
 import com.eventure.controller.FrontController;
+import com.eventure.services.ServiceFactory;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
         choices.add("Calendar");
         choices.add("Map");
         choices.add("Settings");
+        choices.add("About");
         ListAdapter adapter = new ArrayAdapter(this,R.layout.menu_items_layout,choices);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -41,6 +43,12 @@ public class MenuActivity extends AppCompatActivity {
                     ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, CalendarActivity.class);
                 }else if(position == 2){
                     ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, MapsActivity.class);
+                }
+                else if(position == 3){
+                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, SettingActivity.class);
+                }
+                else if(position==4){
+                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this,AboutActivity.class);
                 }
             }
         });

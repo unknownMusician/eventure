@@ -124,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         Intent intent = new Intent(MapsActivity.this, EventActivity.class);
-        intent.putExtra(MyEvent.class.getName(), event);
+        intent.putExtra(MyEvent.class.getSimpleName(), event);
         startActivity(intent);
 
         return true;

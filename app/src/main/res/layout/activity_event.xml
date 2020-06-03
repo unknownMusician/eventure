@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/eventTitleTextView"
-        android:layout_width="221dp"
-        android:layout_height="96dp"
+        android:layout_width="238dp"
+        android:layout_height="119dp"
         android:fontFamily="@font/abril_fatface"
         android:gravity="center"
         android:text="TextView"

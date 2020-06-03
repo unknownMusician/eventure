@@ -14,12 +14,31 @@ public class MyEvent implements Serializable {
     private int type;
     private int status;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MyEvent)) return false;
+        MyEvent event = (MyEvent) o;
+        return getType() == event.getType() &&
+                Objects.equals(getEventId(), event.getEventId()) &&
+                Objects.equals(getTitle(), event.getTitle()) &&
+                Objects.equals(getDescription(), event.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEventId(), getTitle(), getDescription(), getType());
+    }
+
     public int getStatus() {
         return status;
     }
     // 1 - Will be
     // 0 - Right now
     // -1 Ended
+
+
+
 
     public void setStatus(int status) {
         this.status = status;
@@ -33,25 +52,6 @@ public class MyEvent implements Serializable {
         setDate(year,month,date,hour,min);
         this.place = place;
         this.type = type;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MyEvent)) return false;
-        MyEvent myEvent = (MyEvent) o;
-        return getType() == myEvent.getType() &&
-                getStatus() == myEvent.getStatus() &&
-                Objects.equals(getEventId(), myEvent.getEventId()) &&
-                Objects.equals(getTitle(), myEvent.getTitle()) &&
-                Objects.equals(getDescription(), myEvent.getDescription()) &&
-                Objects.equals(getDate(), myEvent.getDate()) &&
-                Objects.equals(getPlace(), myEvent.getPlace());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getEventId(), getTitle(), getDescription(), getDate(), getPlace(), getType(), getStatus());
     }
 
     @Override

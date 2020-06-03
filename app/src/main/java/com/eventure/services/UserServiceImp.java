@@ -1,6 +1,8 @@
 package com.eventure.services;
 
 import android.os.Build;
+import android.os.UserHandle;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -10,6 +12,8 @@ import com.eventure.model.User;
 
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
+
+import static android.content.ContentValues.TAG;
 
 public class UserServiceImp implements UserService {
 
@@ -72,6 +76,16 @@ public class UserServiceImp implements UserService {
 
         public static void setLocation(Place location) {
             UserHolder.location = location;
+        }
+    }
+    public boolean changePassword(String oldPassword,String newPassword){
+        Log.d(TAG, "changePassword: " + UserHolder.getUser().getPassword());
+        if(UserHolder.getUser().getPassword().equals(oldPassword)){
+            UserHolder.getUser().setPassword(newPassword);
+            return true;
+        }
+       else {
+           return false;
         }
     }
 }

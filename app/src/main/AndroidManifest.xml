@@ -45,11 +45,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.MenuActivity" />
         <activity android:name=".activities.EventListActivity" />
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.CreateEventActivity"></activity>
+        <activity android:name=".activities.SettingActivity"></activity>
+        <activity android:name=".activities.ChangePasswordActivity"></activity>
+        <activity android:name=".activities.AboutActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -38,8 +38,7 @@ public class EventListActivity extends AppCompatActivity {
     ListAdapter adapter;
     ListView list;
     TextView title;
-    ArrayList<String> statuses;
-    ListView statusesListView;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -57,8 +56,6 @@ public class EventListActivity extends AppCompatActivity {
         });
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -67,7 +64,7 @@ public class EventListActivity extends AppCompatActivity {
 
     private void logic(){
         list = findViewById(R.id.listOfEventsList);
-        statusesListView = findViewById(R.id.listOfEventsStatusesList);
+      //  statusesListView = findViewById(R.id.listOfEventsStatusesList);
 
         title = findViewById(R.id.listEventTitleTextView);
         yearStr = getIntent().getStringExtra("year");
@@ -76,10 +73,11 @@ public class EventListActivity extends AppCompatActivity {
 
         Spinner spinnerFilter = findViewById(R.id.eventFilterSpinner);
         Spinner spinnerSorter = findViewById(R.id.eventSorterSpinner);
-        Log.d(TAG, "onCreate: " + spinnerFilter.getId());
+        Spinner spinnerType = findViewById(R.id.typeSpinner);
 
-        String[] filters = {"All","Today","On week","On month","Favorites"};
-        String[] sorters = {"Newest","Oldest"};
+        String[] filters = {"All","Today","On week","On month","Favorites","My Events","Default"};
+        String[] sorters = {"Newest","Oldest","Active","UpComing","Finished"};
+        String[] types = {"Any Type","Lecture","Discussion","Party","Other"};
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,filters);
         stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilter.setAdapter(stringArrayAdapter);
@@ -87,9 +85,6 @@ public class EventListActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
-
                 if(position == 0) {
                     if(yearStr != null && monthStr != null && dayStr  != null){
                         Integer year = Integer.parseInt(yearStr);
@@ -101,6 +96,9 @@ public class EventListActivity extends AppCompatActivity {
                     else{
                         events = ServiceFactory.get().getEventService().getEventList();
                         title.setText("All events");
+                        spinnerFilter.setSelection(0);
+                        spinnerSorter.setSelection(0);
+                        spinnerType.setSelection(0);
                     }
                 }
                 if(position == 1) {
@@ -119,14 +117,23 @@ public class EventListActivity extends AppCompatActivity {
                     events = ServiceFactory.get().getEventService().getFilteredByFavourite();
                     title.setText("Favorites");
                 }
+                if(position == 5){
+                    events = ServiceFactory.get().getEventService().getFilteredByMyEvents();
+                    title.setText("My Events");
+                }
+                if(position==6){
+                    events = ServiceFactory.get().getEventService().getEventList();
+                    events = ServiceFactory.get().getEventService().getSortedBy(TimeClosestFirst,events);
+                    events = ServiceFactory.get().getEventService().getSortedByType("Any type",events);
+                    spinnerFilter.setSelection(0);
+                    spinnerSorter.setSelection(0);
+                    spinnerType.setSelection(0);
+                }
 
                 titles = ServiceFactory.get().getEventService().getEventTitleList(events);
                 list = findViewById(R.id.listOfEventsList);
                 adapter = new ArrayAdapter(EventListActivity.this,R.layout.event_list_items_layout,titles);
                 list.setAdapter(adapter);
-                statuses = ServiceFactory.get().getEventService().getListOfEventsStatuses(events);
-                adapter = new ArrayAdapter<>(EventListActivity.this,R.layout.event_list_status_items,statuses);
-                statusesListView.setAdapter(adapter);
                 yearStr = null;
                 monthStr = null;
                 dayStr = null;
@@ -150,14 +157,54 @@ public class EventListActivity extends AppCompatActivity {
                 if(position == 1){
                     events = ServiceFactory.get().getEventService().getSortedBy(TimeFurthestFirst,events);
                 }
+                if(position == 2){
+                    events = ServiceFactory.get().getEventService().getSortedByStatus("Active",events);
+                }
+                if(position == 3){
+                    events = ServiceFactory.get().getEventService().getSortedByStatus("UpComing",events);
+                }
+                if(position == 4){
+                    events = ServiceFactory.get().getEventService().getSortedByStatus("Finished",events);
+                }
                 titles = ServiceFactory.get().getEventService().getEventTitleList(events);
                 list = findViewById(R.id.listOfEventsList);
                 adapter = new ArrayAdapter(EventListActivity.this,R.layout.event_list_items_layout,titles);
                 list.setAdapter(adapter);
-                statuses = ServiceFactory.get().getEventService().getListOfEventsStatuses(events);
-                adapter = new ArrayAdapter<>(EventListActivity.this,R.layout.event_list_status_items,statuses);
-                statusesListView.setAdapter(adapter);
 
+            }
+
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        ArrayAdapter<String> stringArrayAdapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item,types);
+        stringArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(stringArrayAdapter2);
+        spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    events = ServiceFactory.get().getEventService().getSortedByType("Any Type",events);
+                }
+                if(position == 1){
+                    events = ServiceFactory.get().getEventService().getSortedByType("Lecture",events);
+                }
+                if(position == 2){
+                    events = ServiceFactory.get().getEventService().getSortedByType("Discussion",events);
+                }
+                if(position == 3){
+                    events = ServiceFactory.get().getEventService().getSortedByType("Party",events);
+                }
+                if(position == 4){
+                    events = ServiceFactory.get().getEventService().getSortedByType("Other",events);
+                }
+                titles = ServiceFactory.get().getEventService().getEventTitleList(events);
+                list = findViewById(R.id.listOfEventsList);
+                adapter = new ArrayAdapter(EventListActivity.this,R.layout.event_list_items_layout,titles);
+                list.setAdapter(adapter);
             }
 
             @Override
@@ -169,8 +216,9 @@ public class EventListActivity extends AppCompatActivity {
             @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(EventListActivity.this,EventActivity.class);
-            intent.putExtra(MyEvent.class.getName(),events.get(position));
+            intent.putExtra(MyEvent.class.getSimpleName(),events.get(position));
             startActivity(intent);
+                Log.d(TAG, "onItemClick: " + events.get(position).hashCode());
         }
     });
 
