@@ -23,6 +23,7 @@ public class InMemoryTestData {
         User q = new User(4,"q","123");
 
 
+
         MyEvent event = new MyEvent(0,"Lecture on quantum physics",
                 "Let`s talk about physics! \n" +
                         "Immerse yourself in the endless world of physics with Professor Albert Einstein and Associate Professor Natalia Yakunina",120,5,5,12,30,
