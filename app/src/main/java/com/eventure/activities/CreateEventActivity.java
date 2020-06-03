@@ -1,8 +1,10 @@
 package com.eventure.activities;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,32 +21,48 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.eventure.R;
 import com.eventure.controller.ControllerFactory;
+import com.eventure.controller.MapsController;
 import com.eventure.model.MyEvent;
 import com.eventure.model.Place;
 import com.eventure.services.ServiceFactory;
+import com.eventure.services.UserServiceImp;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+import static com.eventure.util.Constants.MAPVIEW_BUNDLE_KEY;
+
+public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
     private static final String TAG = "Create Activity" ;
     Integer type,year,month,day,hour,min;
     String title,description;
     EditText titleEditText;
     EditText descriptionEditText;
-    EditText placeEditText;
     Place place;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        onMapCreate(savedInstanceState);
+
         Button setDateBtn = findViewById(R.id.setDateBtn);
         Button setTimeBtn = findViewById(R.id.setTimeBtn);
 
@@ -93,12 +111,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 else{
                     titleEditText = findViewById(R.id.setTitleEditText);
                     descriptionEditText = findViewById(R.id.setDescriptionEditText);
-                    placeEditText = findViewById(R.id.setPlaceEditText);
                     title = titleEditText.getText().toString();
                     description = descriptionEditText.getText().toString();
                     //ToDo
-                    //place = placeEditText.getText().toString();
-                    place = new Place(14, 14);
+                    place = finPlace;
+                    //place = new Place(50, 20);
                     //
                     if(title.equals("")||description.equals("")||place.equals("")){
                         Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT).show();
@@ -145,5 +162,128 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }
         this.hour = hourOfDay;
         this.min = minute;
+    }
+
+    ////////// Maps //////////
+    //////////  ↓ ↓ //////////
+
+    private MapView mMapView;
+    private Place finPlace;
+
+    private void onMapCreate(Bundle savedInstanceState){
+        Bundle mapViewBundle = null;
+        if(savedInstanceState != null){
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+        mMapView = (MapView) findViewById(R.id.mapView);
+        mMapView.onCreate(mapViewBundle);
+
+        mMapView.getMapAsync(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if(mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+
+        mMapView.onSaveInstanceState(mapViewBundle);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMapView.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMapView.onStop();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        MapsController controller = ControllerFactory.get().getMapsController();
+        // adding Markers
+        Place eventPlace = UserServiceImp.UserHolder.getLocation();
+        LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
+
+        finPlace = eventPlace;
+        addMarker(map, eventLatLng, controller);
+        showUserLocation(map);
+        moveCamera(map, eventPlace);
+    }
+
+    private void addMarker(GoogleMap map, LatLng eventLatLng, MapsController controller){
+        Marker eventMarker = map.addMarker(new MarkerOptions()
+                .position(eventLatLng)
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+        map.setOnMarkerDragListener(this);
+    }
+
+    private void showUserLocation(GoogleMap map) {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        map.setMyLocationEnabled(true);
+    }
+
+    private void moveCamera(GoogleMap map, Place eventPlace) {
+        LatLng leftBottom = new LatLng(
+                eventPlace.getLatitude() - 0.02d,
+                eventPlace.getLongitude() - 0.02d);
+        Log.d(TAG, "Boundaries: leftBottom: " + leftBottom);
+        LatLng rightTop = new LatLng(
+                eventPlace.getLatitude() + 0.02d,
+                eventPlace.getLongitude() + 0.02d);
+        Log.d(TAG, "Boundaries: rightTop: " + rightTop);
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(leftBottom, rightTop), 1));
+    }
+
+    @Override
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+        //
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+        //
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        LatLng markerLatLng = marker.getPosition();
+        finPlace = new Place(markerLatLng.latitude, markerLatLng.longitude);
     }
 }
