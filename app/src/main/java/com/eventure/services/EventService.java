@@ -39,6 +39,9 @@ public interface EventService {
 
 
 
+
+
+
     ArrayList<MyEvent> getFilteredByDate(int year,int month,int day);
     ArrayList<MyEvent> getFilteredBy(FilterType sortType);
 

@@ -3,6 +3,11 @@ package com.eventure.inmemory;
 import com.eventure.model.MyEvent;
 import com.eventure.model.Place;
 import com.eventure.model.User;
+import com.eventure.services.ServiceFactory;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class InMemoryTestData {
 
@@ -16,6 +21,7 @@ public class InMemoryTestData {
         User john = new User(2,"john","123");
         User mike = new User(3,"mike","123");
         User q = new User(4,"q","123");
+
 
         MyEvent event = new MyEvent(0,"Lecture on quantum physics",
                 "Let`s talk about physics! \n" +

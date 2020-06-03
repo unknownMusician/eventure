@@ -211,6 +211,9 @@ public class EventServiceImp implements EventService {
         return colorOfEvent;
     }
 
+    // QuickSort
+
+
     public String getEventStringType(MyEvent event) {
         String type = "";
         switch (event.getType()) {
