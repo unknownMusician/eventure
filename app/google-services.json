@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "907563154604-lhf4ca74l4g9n45tf23us369cn9g4tha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eventure",
+            "certificate_hash": "d77ad82ff0cf0fc940ae5438cb7fcd105b31b560"
+          }
+        },
+        {
           "client_id": "907563154604-egvjg2uidqo14gue5h6tik69pf8nb3i8.apps.googleusercontent.com",
           "client_type": 3
         }
