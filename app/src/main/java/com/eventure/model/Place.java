@@ -26,4 +26,12 @@ public class Place implements Serializable {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }
