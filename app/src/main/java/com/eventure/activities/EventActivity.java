@@ -96,7 +96,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         if(currentState){
             favoritesCheckBox.setChecked(true);
         }
-        
+
         favoritesCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
