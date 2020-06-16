@@ -32,7 +32,11 @@ public class UserServiceImp implements UserService {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public boolean checkPassword(User user, String password) {
+    public boolean checkPassword(String login, String password) {
+        User user = ServiceFactory.get().getUserService().getByLogin(login);
+        if (user == null) {
+            return false;
+        }
         if (user.getPassword().equals(passwordHasher.apply(password))){
             UserHolder.setUser(user);
             return true;
@@ -41,9 +45,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void createUser(String login, String password) {
+    public boolean createUser(String login, String password) {
+        if(login.replaceAll(" ", "").equals("") || password.replaceAll(" ", "").equals("") ||
+                exist(login)) {
+            return false;
+        }
         User user = new User(0, login, password);
         daoFactory.getUserDao().insert(user, true);
+        return true;
     }
 
     @Override

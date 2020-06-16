@@ -15,9 +15,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.FrontController;
-import com.eventure.services.ServiceFactory;
 
 import java.util.ArrayList;
 
@@ -40,17 +37,17 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, EventListActivity.class);
+                    startActivity(new Intent(getApplicationContext(), EventListActivity.class));
                 }else if(position == 1){
-                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, CalendarActivity.class);
+                    startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
                 }else if(position == 2){
-                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, MapsActivity.class);
+                    startActivity(new Intent(getApplicationContext(), MapsActivity.class));
                 }
                 else if(position == 3){
-                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this, SettingActivity.class);
+                    startActivity(new Intent(getApplicationContext(), SettingActivity.class));
                 }
                 else if(position==4){
-                    ControllerFactory.get().getFrontController().goToActivity(MenuActivity.this,AboutActivity.class);
+                    startActivity(new Intent(getApplicationContext(), AboutActivity.class));
                 }
             }
         });

@@ -1,23 +1,11 @@
 package com.eventure.activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,35 +15,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.MapsController;
 import com.eventure.model.MyEvent;
-import com.eventure.model.User;
 import com.eventure.model.Place;
+import com.eventure.services.MapsService;
 import com.eventure.services.ServiceFactory;
 import com.eventure.services.UserServiceImp;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
-import static com.eventure.util.Constants.ERROR_DIALOG_REQUEST;
 import static com.eventure.util.Constants.MAPVIEW_BUNDLE_KEY;
-import static com.eventure.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
-import static com.eventure.util.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
 public class EventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -164,25 +138,24 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onMapReady(GoogleMap map) {
-        MapsController controller = ControllerFactory.get().getMapsController();
         // adding Markers
         Place eventPlace = event.getPlace();
         LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
 
-        addMarker(map, eventLatLng, controller);
+        addMarker(map, eventLatLng, ServiceFactory.get().getMapsService());
         showUserLocation(map);
         moveCamera(map);
     }
 
-    private void addMarker(GoogleMap map, LatLng eventLatLng, MapsController controller){
+    private void addMarker(GoogleMap map, LatLng eventLatLng, MapsService service){
         Marker marker = map
                 .addMarker(new MarkerOptions()
                         .position(eventLatLng)
                         .title(event
                                 .getTitle())
                         .icon(
-                                controller
-                                        .bitmapDescriptorFromVector(getApplicationContext(), controller.getIconByType(event))));
+                                service
+                                        .bitmapDescriptorFromVector(getApplicationContext(), service.getIconByType(event))));
     }
 
     private void showUserLocation(GoogleMap map) {

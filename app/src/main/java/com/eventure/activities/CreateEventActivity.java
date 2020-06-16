@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,13 +24,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.MapsController;
 import com.eventure.model.MyEvent;
 import com.eventure.model.Place;
 import com.eventure.services.ServiceFactory;
 import com.eventure.services.UserServiceImp;
-import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -121,12 +117,12 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                         Toast.makeText(CreateEventActivity.this,"You didn`t submit all fields",Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Intent intent = new Intent(CreateEventActivity.this,EventActivity.class);
+                        Intent intent = new Intent(getApplicationContext(),EventActivity.class);
                         MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
                         ServiceFactory.get().getEventService().addToMyEvents(newEvent);
                         intent.putExtra(MyEvent.class.getSimpleName(),newEvent);
-                        Toast.makeText(CreateEventActivity.this,"Your activity has been created!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Your activity has been created!",Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                     }
                 }
@@ -214,18 +210,17 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     @Override
     public void onMapReady(GoogleMap map) {
-        MapsController controller = ControllerFactory.get().getMapsController();
         // adding Markers
         Place eventPlace = UserServiceImp.UserHolder.getLocation();
         LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
 
         finPlace = eventPlace;
-        addMarker(map, eventLatLng, controller);
+        addMarker(map, eventLatLng);
         showUserLocation(map);
         moveCamera(map, eventPlace);
     }
 
-    private void addMarker(GoogleMap map, LatLng eventLatLng, MapsController controller){
+    private void addMarker(GoogleMap map, LatLng eventLatLng){
         Marker eventMarker = map.addMarker(new MarkerOptions()
                 .position(eventLatLng)
                 .draggable(true)

@@ -1,5 +1,6 @@
 package com.eventure.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
 import com.eventure.services.ServiceFactory;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -29,10 +29,13 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ControllerFactory.get().getRegisterController().registerUser(mLogin,mPassword)){
+                String login = mLogin.getText().toString();
+                String password = mPassword.getText().toString();
+
+                if(ServiceFactory.get().getUserService().checkPassword(login,password)){
                     toastMessage("You have successfully created an account");
                     Log.d(TAG, "onClick: " + ServiceFactory.get().getUserService().getAllUsers());
-                    ControllerFactory.get().getFrontController().goToActivity(RegisterActivity.this,MainActivity.class);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
                 else{
                     toastMessage("Sorry the is trouble!");

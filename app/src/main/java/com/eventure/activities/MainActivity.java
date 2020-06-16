@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.FrontController;
+import com.eventure.services.ServiceFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +28,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText mLogin = findViewById(R.id.loginFormEditText);
                 EditText mPassword = findViewById(R.id.passwordFormEditText);
-                if(ControllerFactory.get().getLoginController().checkUserLoginAttributes(mLogin,mPassword)){
+
+                String login = mLogin.getText().toString();
+                String password = mPassword.getText().toString();
+
+                if(ServiceFactory.get().getUserService().checkPassword(login,password)){
                     toastMessage("You sign it!");
-                    ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,MenuActivity.class);
+                    startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                 }
                 else{
                     toastMessage("Wrong password or login");
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,RegisterActivity.class);
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
             }
         });
 

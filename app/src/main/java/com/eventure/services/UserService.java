@@ -9,9 +9,9 @@ public interface UserService {
 
     User getByLogin(String login);
 
-    boolean checkPassword(User user, String password);
+    boolean checkPassword(String login, String password);
 
-    void createUser(String name, String password);
+    boolean createUser(String name, String password);
 
     boolean exist(String name);
     ArrayList<User> getAllUsers();
