@@ -10,9 +10,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -20,10 +17,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.MapsController;
 import com.eventure.model.MyEvent;
 import com.eventure.model.Place;
+import com.eventure.services.MapsService;
+import com.eventure.services.ServiceFactory;
 import com.eventure.services.UserServiceImp;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -31,8 +28,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -92,12 +87,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void addMarkers() {
         // Add a marker in Sydney and move the camera
-        Place place = ControllerFactory.get().getMapsController().getMyLocation();
+        Place place = ServiceFactory.get().getMapsService().getMyLocation();
         LatLng userLatLng = new LatLng(place.getLatitude(), place.getLongitude());
                 // ToDo
-        MapsController controller = ControllerFactory.get().getMapsController();
+        MapsService service = ServiceFactory.get().getMapsService();
 
-        ArrayList<MyEvent> events = ControllerFactory.get().getMapsController().getAllEvents();
+        ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();
         for (int i = 0; i < events.size(); i++) {
             Place eventPlace = events.get(i).getPlace();
             LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
@@ -108,8 +103,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     .get(i)
                                     .getTitle())
                             .icon(
-                                    ControllerFactory.get().getMapsController()
-                                            .bitmapDescriptorFromVector(getApplicationContext(), controller.getIconByType(events.get(i)))));
+                                    service
+                                            .bitmapDescriptorFromVector(getApplicationContext(), service.getIconByType(events.get(i)))));
             marker.setTag(events.get(i));
         }
         mMap.setOnMarkerClickListener(this);

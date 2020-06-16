@@ -15,8 +15,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.FrontController;
 
 import java.util.ArrayList;
 
@@ -36,10 +34,10 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    ControllerFactory.get().getFrontController().goToActivity(SettingActivity.this,ChangePasswordActivity.class);
+                    startActivity(new Intent(getApplicationContext(), ChangePasswordActivity.class));
                 }
                 if(position == 1){
-                    ControllerFactory.get().getFrontController().goToActivity(SettingActivity.this,MainActivity.class);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     toastMessage("You have been logged out");
                 }
             }

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -18,7 +17,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
 import com.eventure.model.MyEvent;
 import com.eventure.services.ServiceFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,7 +49,7 @@ public class EventListActivity extends AppCompatActivity {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ControllerFactory.get().getFrontController().goToActivity(EventListActivity.this,CreateEventActivity.class);
+                startActivity(new Intent(getApplicationContext(), CreateEventActivity.class));
             }
         });
     }
@@ -216,7 +214,7 @@ public class EventListActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(EventListActivity.this,EventActivity.class);
+            Intent intent = new Intent(getApplicationContext(),EventActivity.class);
             intent.putExtra(MyEvent.class.getSimpleName(),events.get(position));
             startActivity(intent);
                 Log.d(TAG, "onItemClick: " + events.get(position).hashCode());

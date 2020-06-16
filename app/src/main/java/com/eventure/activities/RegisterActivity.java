@@ -1,5 +1,6 @@
 package com.eventure.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
 import com.eventure.services.ServiceFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,51 +47,40 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = mPassword.getText().toString();
 
 
-                if(!login.equals("") && !password.equals("")){
-                    mAuth.createUserWithEmailAndPassword(login,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                if (!login.equals("") && !password.equals("")) {
+                    mAuth.createUserWithEmailAndPassword(login, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
-                                try
-                                {
+                            if (!task.isSuccessful()) {
+                                try {
                                     throw task.getException();
-                                }
-                                catch (FirebaseAuthUserCollisionException existEmail)
-                                {
+                                } catch (FirebaseAuthUserCollisionException existEmail) {
                                     toastMessage("An email already exists");
                                     Log.d(TAG, "onComplete: exist_email");
-                                }
-                                catch (FirebaseAuthWeakPasswordException weakPassword)
-                                {
+                                } catch (FirebaseAuthWeakPasswordException weakPassword) {
                                     toastMessage("Weak password");
                                     Log.d(TAG, "onComplete: weak_password");
-                                }
-                                catch (FirebaseAuthInvalidCredentialsException malformedEmail)
-                                {
+                                } catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
                                     toastMessage("Wrong email format");
                                     Log.d(TAG, "onComplete: malformed_email");
-                                }
-                                catch (Exception e)
-                                {
+                                } catch (Exception e) {
                                     toastMessage("Sorry there is a trouble");
                                     Log.d(TAG, "onComplete: " + e.getMessage());
                                 }
-                            }
-                            else{
+                            } else {
                                 toastMessage("You have successfully created an account");
-                                ControllerFactory.get().getFrontController().goToActivity(RegisterActivity.this,MainActivity.class);
+                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             }
                         }
                     });
-                }
-                else{
+                } else {
                     toastMessage("Please fill all fields");
                 }
-
             }
         });
-
     }
+
+
 
 
 

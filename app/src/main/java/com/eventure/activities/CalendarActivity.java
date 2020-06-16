@@ -5,28 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.FrontController;
-import com.eventure.model.MyEvent;
 import com.eventure.services.ServiceFactory;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -80,7 +69,7 @@ public class CalendarActivity extends AppCompatActivity {
         createEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ControllerFactory.get().getFrontController().goToActivity(CalendarActivity.this,CreateEventActivity.class);
+                startActivity(new Intent(getApplicationContext(), CreateEventActivity.class));
             }
         });
 

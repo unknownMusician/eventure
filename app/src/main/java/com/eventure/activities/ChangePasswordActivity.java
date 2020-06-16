@@ -1,5 +1,6 @@
 package com.eventure.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
 import com.eventure.services.ServiceFactory;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -39,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 if(!newPassword.equals("")){
                 if(ServiceFactory.get().getUserService().changePassword(oldPassword, newPassword)){
                         toastMessage("You have successfully changed a password");
-                        ControllerFactory.get().getFrontController().goToActivity(ChangePasswordActivity.this, MenuActivity.class);
+                        startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                     }
                 else{
                     toastMessage("Wrong password");

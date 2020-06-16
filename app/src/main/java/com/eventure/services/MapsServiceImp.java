@@ -1,4 +1,4 @@
-package com.eventure.controller;
+package com.eventure.services;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,23 +8,21 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 
 import com.eventure.R;
+import com.eventure.dao.DaoFactory;
 import com.eventure.model.MyEvent;
 import com.eventure.model.Place;
-import com.eventure.services.ServiceFactory;
-import com.eventure.services.UserServiceImp;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
-import java.util.ArrayList;
+public class MapsServiceImp implements MapsService {
+    DaoFactory daoFactory;
 
-public class MapsController extends FrontController {
+    public MapsServiceImp(DaoFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
 
     public Place getMyLocation(){
         return UserServiceImp.UserHolder.getLocation();
-    }
-
-    public ArrayList<MyEvent> getAllEvents(){
-        return ServiceFactory.get().getEventService().getEventList();
     }
 
     public int getIconByType(MyEvent event){

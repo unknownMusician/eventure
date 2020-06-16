@@ -15,8 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eventure.R;
-import com.eventure.controller.ControllerFactory;
-import com.eventure.controller.FrontController;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthEmailException;
+import com.eventure.services.ServiceFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     int RC_SIGN_IN = 0;
     SignInButton signInWithGoogleBtn;
     private FirebaseAuth mAuth;
-
 
 
     @Override
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 EditText mPassword = findViewById(R.id.passwordFormEditText);
                 String login = mLogin.getText().toString();
                 String password = mPassword.getText().toString();
-                if(!login.equals("") && !password.equals("")) {
+                if (!login.equals("") && !password.equals("")) {
                     mAuth.signInWithEmailAndPassword(login, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -70,21 +69,11 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     });
+
                 }
-                else{
-                    toastMessage("Please fill all fields");
-                }
-
-
-
             }
         });
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ControllerFactory.get().getFrontController().goToActivity(MainActivity.this,RegisterActivity.class);
-            }
-        });
+
 
         signInWithGoogleBtn = findViewById(R.id.googleSignInBtn);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -105,15 +94,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if(keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -122,10 +107,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
     private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -138,12 +125,13 @@ public class MainActivity extends AppCompatActivity {
             handleSignInResult(task);
         }
     }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             // Signed in successfully, show authenticated UI.
-            Intent intent = new Intent(MainActivity.this,MenuActivity.class);
+            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
             startActivity(intent);
 
         } catch (ApiException e) {
@@ -155,8 +143,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-     @RequiresApi(api = Build.VERSION_CODES.N)
-        private void toastMessage(String message){
-            Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
-        }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void toastMessage(String message) {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
 }
+
