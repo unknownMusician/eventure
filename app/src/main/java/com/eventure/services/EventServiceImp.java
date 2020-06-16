@@ -168,8 +168,8 @@ public class EventServiceImp implements EventService {
     }
 
     public void addEventsOnCalendar(CompactCalendarView calendar) {
-        // Lection type - 1
-        // Disscution type - 2
+        // Lecture type - 1
+        // Discution type - 2
         // Party type - 3
         // Other type - 4
         ArrayList<MyEvent> events = ServiceFactory.get().getEventService().getEventList();

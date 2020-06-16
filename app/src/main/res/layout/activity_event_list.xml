@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/listEventTitleTextView"
-        android:layout_width="254dp"
-        android:layout_height="84dp"
+        android:layout_width="270dp"
+        android:layout_height="125dp"
         android:fontFamily="@font/abril_fatface"
         android:gravity="center"
         android:text="@string/list_of_events"
@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041" />
+        app:layout_constraintVertical_bias="0.026" />
 
     <ListView
         android:id="@+id/listOfEventsList"

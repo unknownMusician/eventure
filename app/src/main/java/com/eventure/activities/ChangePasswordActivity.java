@@ -50,12 +50,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
-
-
-
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void toastMessage(String message){
