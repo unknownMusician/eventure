@@ -91,16 +91,17 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         title.setText(event.getTitle());
         description.setText(event.getDescription());
         time.setText(event.getDate().toString());
-
-        currentState = UserServiceImp.UserHolder.getUser().getUserFavoriteEvents().contains(event);
         favoritesCheckBox = findViewById(R.id.eventFavoritsCheckBox);
-        if(currentState){
-            favoritesCheckBox.setChecked(true);
-        }
+
+
         favoritesCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentState == false){
+                currentState = UserServiceImp.UserHolder.getUser().getUserFavoriteEvents().contains(event);
+                if(currentState){
+                    favoritesCheckBox.setChecked(true);
+                }
+                if(!currentState){
                     ServiceFactory.get().getEventService().addToFavorites(event);
                     Toast.makeText(EventActivity.this,"Event has been added to your favorites",Toast.LENGTH_SHORT).show();
                 }
