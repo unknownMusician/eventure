@@ -198,6 +198,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         Place straightDistance = new Place(
                 Math.abs(eventPlace.getLatitude() - userPlace.getLatitude()),
                 Math.abs(eventPlace.getLongitude() - userPlace.getLongitude()));
+        Log.d(TAG, "Boundaries: straightDistance: " + straightDistance);
         LatLng leftBottom = new LatLng(
                 Math.min(eventPlace.getLatitude(), userPlace.getLatitude()) - 0.1d * straightDistance.getLatitude(),
                 Math.min(eventPlace.getLongitude(), userPlace.getLongitude()) - 0.1d * straightDistance.getLongitude());
