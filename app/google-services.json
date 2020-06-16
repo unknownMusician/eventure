@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "907563154604-lhf4ca74l4g9n45tf23us369cn9g4tha.apps.googleusercontent.com",
+          "client_id": "907563154604-5400ohqknbo2jruurlee6vf0u54m146l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.eventure",
@@ -23,7 +23,7 @@
           }
         },
         {
-          "client_id": "907563154604-egvjg2uidqo14gue5h6tik69pf8nb3i8.apps.googleusercontent.com",
+          "client_id": "907563154604-6otbcls7og0o6jr9s1qsb41322ov1r6b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -36,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "907563154604-egvjg2uidqo14gue5h6tik69pf8nb3i8.apps.googleusercontent.com",
+              "client_id": "907563154604-6otbcls7og0o6jr9s1qsb41322ov1r6b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
