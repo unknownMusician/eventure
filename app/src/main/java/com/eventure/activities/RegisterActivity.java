@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String login = mLogin.getText().toString();
                 String password = mPassword.getText().toString();
 
-                if(ServiceFactory.get().getUserService().checkPassword(login,password)){
+                if(ServiceFactory.get().getUserService().createUser(login,password)){
                     toastMessage("You have successfully created an account");
                     Log.d(TAG, "onClick: " + ServiceFactory.get().getUserService().getAllUsers());
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));

@@ -3,11 +3,14 @@ package com.eventure.activities;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -28,6 +31,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.internal.PolylineEncoding;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.eventure.util.Constants.MAPVIEW_BUNDLE_KEY;
 
@@ -93,6 +107,8 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     //////////  ↓ ↓ //////////
 
     private MapView mMapView;
+    private GoogleMap mMap;
+    private GeoApiContext mGeoApiContext = null;
 
     private void onMapCreate(Bundle savedInstanceState){
         Bundle mapViewBundle = null;
@@ -103,6 +119,10 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         mMapView.onCreate(mapViewBundle);
 
         mMapView.getMapAsync(this);
+
+        if(mGeoApiContext == null){
+            mGeoApiContext = new GeoApiContext.Builder().apiKey(getString(R.string.google_maps_key)).build();
+        }
     }
 
     @Override
@@ -141,14 +161,16 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
         // adding Markers
         Place eventPlace = event.getPlace();
         LatLng eventLatLng = new LatLng(eventPlace.getLatitude(), eventPlace.getLongitude());
+        mMap = map;
 
-        addMarker(map, eventLatLng, ServiceFactory.get().getMapsService());
-        showUserLocation(map);
-        moveCamera(map);
+        Marker marker = addMarker(eventLatLng, ServiceFactory.get().getMapsService());
+        logRoutes(marker);
+        showUserLocation();
+        moveCamera();
     }
 
-    private void addMarker(GoogleMap map, LatLng eventLatLng, MapsService service){
-        Marker marker = map
+    private Marker addMarker(LatLng eventLatLng, MapsService service){
+        Marker marker = mMap
                 .addMarker(new MarkerOptions()
                         .position(eventLatLng)
                         .title(event
@@ -156,17 +178,18 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                         .icon(
                                 service
                                         .bitmapDescriptorFromVector(getApplicationContext(), service.getIconByType(event))));
+        return marker;
     }
 
-    private void showUserLocation(GoogleMap map) {
+    private void showUserLocation() {
         if (ActivityCompat.checkSelfPermission(EventActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(EventActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        map.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(true);
     }
 
-    private void moveCamera(GoogleMap map) {
+    private void moveCamera() {
         Place eventPlace = event.getPlace();
         Place userPlace = UserServiceImp.UserHolder.getLocation();
         Place straightDistance = new Place(
@@ -181,7 +204,7 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
                 Math.max(eventPlace.getLatitude(), userPlace.getLatitude()) + 0.1d * straightDistance.getLatitude(),
                 Math.max(eventPlace.getLongitude(), userPlace.getLongitude()) + 0.1d * straightDistance.getLongitude());
         Log.d(TAG, "Boundaries: rightTop: " + rightTop);
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(leftBottom, rightTop), 1));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(leftBottom, rightTop), 1));
     }
 
     @Override
@@ -200,5 +223,82 @@ public class EventActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    //////////    ↑ ↑     //////////
+    //////////    Maps    //////////
+    //----------------------------//
+    ////////// Directions //////////
+    ////////// ↓ ↓ ↓ ↓ ↓  //////////
+
+    private void addPolylinesToMap(final DirectionsResult result){
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "run: result routes: " + result.routes.length);
+
+                for(DirectionsRoute route: result.routes){
+                    Log.d(TAG, "run: leg: " + route.legs[0].toString());
+                    List<com.google.maps.model.LatLng> decodedPath = PolylineEncoding.decode(route.overviewPolyline.getEncodedPath());
+
+                    List<LatLng> newDecodedPath = new ArrayList<>();
+
+                    // This loops through all the LatLng coordinates of ONE polyline.
+                    for(com.google.maps.model.LatLng latLng: decodedPath){
+
+//                        Log.d(TAG, "run: latlng: " + latLng.toString());
+
+                        newDecodedPath.add(new LatLng(
+                                latLng.lat,
+                                latLng.lng
+                        ));
+                    }
+                    Polyline polyline = mMap.addPolyline(new PolylineOptions().addAll(newDecodedPath));
+                    polyline.setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                    polyline.setClickable(true);
+
+                }
+            }
+        });
+    }
+
+    private void calculateDirections(Marker marker){
+        Log.d(TAG, "calculateDirections: calculating directions.");
+
+        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
+                marker.getPosition().latitude,
+                marker.getPosition().longitude
+        );
+        DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
+
+        directions.alternatives(true);
+        directions.origin(
+                new com.google.maps.model.LatLng(
+                        UserServiceImp.UserHolder.getLocation().getLatitude(),
+                        UserServiceImp.UserHolder.getLocation().getLongitude()
+                )
+        );
+        Log.d(TAG, "calculateDirections: destination: " + destination.toString());
+        directions.destination(destination).setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
+                Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
+                Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
+
+                addPolylinesToMap(result);
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
+
+            }
+        });
+    }
+
+    private void logRoutes(Marker marker){
+        calculateDirections(marker);
     }
 }
