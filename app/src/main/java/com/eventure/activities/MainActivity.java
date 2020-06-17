@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 toastMessage("Wrong login or password");
                             } else {
-                                mAuth.signInWithEmailAndPassword(login, password);
                                 Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                                 startActivity(intent);
                                 toastMessage("You sign in successfully");
@@ -70,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
                     });
 
+                }
+                else{
+                    toastMessage("Please fill all fields!");
                 }
             }
         });
@@ -90,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     // ...
                 }
+            }
+        });
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,RegisterActivity.class));
             }
         });
 
@@ -141,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
