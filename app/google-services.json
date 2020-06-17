@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "907563154604",
-    "firebase_url": "https://eventure-279013.firebaseio.com",
-    "project_id": "eventure-279013",
-    "storage_bucket": "eventure-279013.appspot.com"
+    "project_number": "362009993191",
+    "firebase_url": "https://eventure-280614.firebaseio.com",
+    "project_id": "eventure-280614",
+    "storage_bucket": "eventure-280614.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:907563154604:android:fb0c822ba76ac786797309",
+        "mobilesdk_app_id": "1:362009993191:android:6aaf0f88ad0df025586742",
         "android_client_info": {
           "package_name": "com.eventure"
         }
       },
       "oauth_client": [
         {
-          "client_id": "907563154604-5400ohqknbo2jruurlee6vf0u54m146l.apps.googleusercontent.com",
+          "client_id": "362009993191-tmfdcm8lmp6uhp76p9vqps8rqit361m3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.eventure",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "907563154604-6otbcls7og0o6jr9s1qsb41322ov1r6b.apps.googleusercontent.com",
+          "client_id": "362009993191-48acer2dcu998hrhtogp5k1aponctlna.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDU4jyI1daSQk-9cKTGdYP0pb5ZtpiI000"
+          "current_key": "AIzaSyDmel-ir6rsaciVrety62lh-pKdb4q0Se4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "907563154604-6otbcls7og0o6jr9s1qsb41322ov1r6b.apps.googleusercontent.com",
+              "client_id": "362009993191-48acer2dcu998hrhtogp5k1aponctlna.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
