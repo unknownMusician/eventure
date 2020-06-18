@@ -37,6 +37,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -54,6 +56,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
@@ -119,6 +124,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                     else{
                         Intent intent = new Intent(getApplicationContext(),EventActivity.class);
                         MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
+                        myRef.child("events").push().setValue(newEvent);
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
                         ServiceFactory.get().getEventService().addToMyEvents(newEvent);
                         intent.putExtra(MyEvent.class.getSimpleName(),newEvent);

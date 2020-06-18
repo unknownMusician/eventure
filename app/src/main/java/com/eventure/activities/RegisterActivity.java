@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.eventure.R;
+import com.eventure.model.Test;
+import com.eventure.model.User;
 import com.eventure.services.ServiceFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,7 +24,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity" ;
@@ -32,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
         mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
@@ -68,6 +80,19 @@ public class RegisterActivity extends AppCompatActivity {
                                     Log.d(TAG, "onComplete: " + e.getMessage());
                                 }
                             } else {
+                                FirebaseUser currentUser = mAuth.getCurrentUser();
+                                User user = new User(login,password);
+                                myRef.child("users").child(currentUser.getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            toastMessage("Nice");
+                                        }
+                                        else{
+                                            toastMessage("fuck!");
+                                        }
+                                    }
+                                });
                                 toastMessage("You have successfully created an account");
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                             }

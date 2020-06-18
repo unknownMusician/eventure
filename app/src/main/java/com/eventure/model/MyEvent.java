@@ -44,6 +44,10 @@ public class MyEvent implements Serializable {
         this.status = status;
     }
 
+    public MyEvent(){
+
+    }
+
     public MyEvent(Integer eventId, String title, String description, int year, int month, int date,
                    int hour, int min, Place place, int type) {
         this.eventId = eventId;
