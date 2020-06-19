@@ -27,6 +27,7 @@ public class ServiceFactory {
     private UserService userService;
     private EventService eventService;
     private MapsService mapsService;
+    private FirebaseService firebaseService;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private ServiceFactory(){
@@ -36,6 +37,7 @@ public class ServiceFactory {
         this.userService = new UserServiceImp(database.getDaoFactory(), UnaryOperator.identity());
         this.eventService = new EventServiceImp(database.getDaoFactory());
         this.mapsService = new MapsServiceImp(database.getDaoFactory());
+        this.firebaseService = new FirebaseServiceImp();
     }
 
     public UserService getUserService() {
@@ -48,5 +50,9 @@ public class ServiceFactory {
 
     public MapsService getMapsService() {
         return mapsService;
+    }
+
+    public FirebaseService getFirebaseService() {
+        return firebaseService;
     }
 }

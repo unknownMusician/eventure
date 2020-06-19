@@ -2,6 +2,7 @@ package com.eventure.services;
 
 import com.eventure.model.MyEvent;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 

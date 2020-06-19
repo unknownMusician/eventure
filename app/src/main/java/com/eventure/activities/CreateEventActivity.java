@@ -40,6 +40,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.eventure.util.Constants.MAPVIEW_BUNDLE_KEY;
 
@@ -119,6 +121,15 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                     else{
                         Intent intent = new Intent(getApplicationContext(),EventActivity.class);
                         MyEvent newEvent = new MyEvent(0,title,description,year,month,day,hour,min,place,type + 1);
+
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("login", "ivan@gmail.com");
+                        user.put("password", "123456");
+                        user.put("huy", "small");
+                        ServiceFactory.get().getFirebaseService().write("events", user);
+                        System.out.println("DICK " + user);
+                        System.out.println("DICK ");
+
                         ServiceFactory.get().getEventService().addEventToData(newEvent);
                         ServiceFactory.get().getEventService().addToMyEvents(newEvent);
                         intent.putExtra(MyEvent.class.getSimpleName(),newEvent);
