@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         ListView list = findViewById(R.id.listMenu);
@@ -37,7 +38,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    startActivity(new Intent(getApplicationContext(), EventListActivity.class));
+                    startActivity(new Intent(getApplicationContext(), EventListActivityDemo.class));
                 }else if(position == 1){
                     startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
                 }else if(position == 2){

@@ -11,12 +11,20 @@ public class User {
         userFavoriteEvents = new ArrayList<MyEvent>();
         userEvents = new ArrayList<MyEvent>();
     }
+    public User(String login,String password){
+        this.login = login;
+        this.password = password;
+    }
+
+
+
 
     private Integer userId;
     private String login;
     private String password;
     private ArrayList<MyEvent> userEvents;
     private ArrayList<MyEvent> userFavoriteEvents;
+
 
     @Override
     public String toString() {

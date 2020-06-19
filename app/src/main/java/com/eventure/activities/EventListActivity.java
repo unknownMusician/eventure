@@ -20,6 +20,10 @@ import com.eventure.R;
 import com.eventure.model.MyEvent;
 import com.eventure.services.ServiceFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -36,12 +40,18 @@ public class EventListActivity extends AppCompatActivity {
     ListAdapter adapter;
     ListView list;
     TextView title;
+    private FirebaseAuth mAuth;
+    DatabaseReference myRef;
+
 
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+        mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
         logic();
