@@ -4,12 +4,18 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.eventure.model.MyEvent;
+import com.eventure.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class FirebaseServiceImp implements FirebaseService {
 
@@ -18,6 +24,8 @@ public class FirebaseServiceImp implements FirebaseService {
 
     public FirebaseServiceImp() {
         db = FirebaseFirestore.getInstance();
+        // FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setTimestampsInSnapshotsEnabled(true).build();
+        // db.setFirestoreSettings(settings);
     }
 
     @Override
@@ -36,6 +44,48 @@ public class FirebaseServiceImp implements FirebaseService {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+    }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+    public User getUser(String login) {
+        return null;
+}
+
+    @Override
+    public ArrayList<User> getAllUsers() {
+        db.collection("users")
+                .get()
+                .
+    }
+
+    @Override
+    public void changeUser(String login, User newUser) {
+
+    }
+
+    @Override
+    public void addEvent(MyEvent event) {
+
+    }
+
+    @Override
+    public MyEvent getEvent(String title) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<MyEvent> getAllEvents() {
+        return null;
+    }
+
+    @Override
+    public void removeEvent(String title) {
+
     }
 
 

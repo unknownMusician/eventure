@@ -15,14 +15,28 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eventure.R;
+import com.eventure.model.User;
+import com.eventure.services.ServiceFactory;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+        //ServiceFactory.get().getFirebaseService().write("users", user);
+
+        ServiceFactory.get().getFirebaseService().write("users", new User(10, "Sergey", "12345"));
+
         setContentView(R.layout.activity_setings);
         ListView listView = findViewById(R.id.settingList);
         ArrayList<String> choices = new ArrayList<>();
